@@ -70,9 +70,6 @@ const HomeSidebar = ({ userid }: HomeSidebarProps) => {
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu
-            defaultSelectedKeys={
-               sampleChannels.map((group) => group.channels[0].channelid) || []
-            }
             className="h-full border-l border-gray-200"
             defaultOpenKeys={sampleChannels.map((group) =>
                group.category.toLowerCase().replace(' ', '-'),
