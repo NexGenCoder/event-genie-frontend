@@ -6,6 +6,7 @@ import { FaHome } from 'react-icons/fa'
 import { PiChatsFill } from 'react-icons/pi'
 import EventSwitch from './dropdowns/event-switch'
 import CreateDropdown from './dropdowns/create-dropdown'
+import { MdOutlineEventSeat } from 'react-icons/md'
 import Link from 'next/link'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 const { Text } = Typography
@@ -43,6 +44,10 @@ const Menus = ({ userid }: MenusProps) => {
                <Link href={`/app/${userid}/dms`}>
                   <PiChatsFill size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">DMs</Text>
+               </Link>
+               <Link href={`/app/${userid}/events`}>
+                  <MdOutlineEventSeat size={30} color={colorTextBase} />
+                  <Text className="text-xs text-center">Events</Text>
                </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">

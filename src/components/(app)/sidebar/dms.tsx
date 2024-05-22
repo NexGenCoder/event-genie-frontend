@@ -41,11 +41,11 @@ const DMSidebar = ({ userid }: DMSidebarProps) => {
       >
          <Menu
             defaultSelectedKeys={
-               sampleChannels.map((channel) => channel.userid) || []
+               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
             }
             className="h-full border-l border-gray-200"
             defaultOpenKeys={
-               sampleChannels.map((channel) => channel.userid) || []
+               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
             }
             mode="inline"
             style={{ backgroundColor: colorBgContainer, color: colorTextBase }}
