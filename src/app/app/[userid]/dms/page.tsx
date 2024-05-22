@@ -1,22 +1,22 @@
 import UserAccount from '@/components/(app)/pages/account'
-import HomeSidebar from '@/components/(app)/sidebar/home'
+import DMSidebar from '@/components/(app)/sidebar/dms'
 import Menus from '@/components/(app)/sidebar/menu'
 import { Flex, Layout } from 'antd'
 import React from 'react'
 
-interface UserHomePageProps {
+interface DMsPageProps {
    params: {
       userid: string
    }
 }
 
-function UserHomePage({ params }: UserHomePageProps) {
+function DMsPage({ params }: DMsPageProps) {
    return (
       <Layout className="h-screen">
          <Flex className="h-full w-full">
             <Flex className="flex w-[300px] h-full ">
                <Menus userid={params.userid} />
-               <HomeSidebar userid={params.userid} />
+               <DMSidebar userid={params.userid} />
             </Flex>
             <UserAccount />
          </Flex>
@@ -24,4 +24,4 @@ function UserHomePage({ params }: UserHomePageProps) {
    )
 }
 
-export default UserHomePage
+export default DMsPage

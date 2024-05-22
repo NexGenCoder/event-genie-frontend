@@ -14,6 +14,7 @@ const CreateDropdown = () => {
       <>
          <Dropdown
             arrow={{ pointAtCenter: true }}
+            trigger={['click']}
             overlay={
                <Flex
                   vertical

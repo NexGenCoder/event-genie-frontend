@@ -9,6 +9,7 @@ import {
    Dropdown,
    Avatar,
 } from 'antd'
+import { IoMdAdd } from 'react-icons/io'
 import { MdPersonAdd } from 'react-icons/md'
 import { BiSolidMessageSquareAdd } from 'react-icons/bi'
 import Image from 'next/image'
@@ -23,7 +24,6 @@ const EventSwitch = () => {
       <Dropdown
          arrow={{ pointAtCenter: true }}
          placement="topLeft"
-         trigger={['click']}
          overlay={
             <Flex
                vertical
@@ -32,17 +32,26 @@ const EventSwitch = () => {
             >
                <Button
                   type="text"
-                  className="flex items-center justify-center p-4"
-                  icon={<MdPersonAdd color={colorTextBase} />}
+                  className="flex items-center justify-center p-"
+                  icon={
+                     <Image
+                        src="/app/wedding-event.png"
+                        alt="logo"
+                        width={25}
+                        height={25}
+                     />
+                  }
                >
-                  <Text className="text-xs">Invite People</Text>
+                  <Text className="text-xs truncate line-clamp-1 w-24">
+                     Deepak Wedding
+                  </Text>
                </Button>
                <Button
                   type="text"
                   className="flex items-center justify-center p-4"
-                  icon={<BiSolidMessageSquareAdd color={colorTextBase} />}
+                  icon={<IoMdAdd color={colorTextBase} />}
                >
-                  <Text className="text-xs">Text Channel</Text>
+                  <Text className="text-xs">Create Event</Text>
                </Button>
             </Flex>
          }
@@ -67,7 +76,6 @@ const EventSwitch = () => {
                   />
                }
             />
-            {/* </Tooltip> */}
          </Flex>
       </Dropdown>
    )

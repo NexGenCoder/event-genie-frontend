@@ -1,8 +1,9 @@
 import { api } from '@/app/services/api'
+import { IUserResponse } from '@/types/user'
 
 type ISendOtp = {
    mobile: string
-   countrycode: string
+   countryCode: string
 }
 
 type IVerifyOtp = {
@@ -15,7 +16,7 @@ type IAddUserDetails = {
    email: string
    firstname: string
    lastname: string
-   profilepicture: string
+   profile_picture: string
    bio: string
 }
 
@@ -24,24 +25,8 @@ type ISendOtpResponse = {
    data: {
       otp: string
       mobile: string
-      countrycode: string
+      countryCode: string
       expiresat: string
-   }
-}
-
-type IUserResponse = {
-   message: string
-   data?: {
-      id: string
-      username: string
-      email: string
-      firstname: string
-      lastname: string
-      profilepicture: string
-      bio: string
-      ismobileverified: boolean
-      isemailverified: boolean
-      isprofilecompleted: boolean
    }
 }
 

@@ -7,6 +7,7 @@ import { PiChatsFill } from 'react-icons/pi'
 import EventSwitch from './dropdowns/event-switch'
 import CreateDropdown from './dropdowns/create-dropdown'
 import Link from 'next/link'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 const { Text } = Typography
 
 interface MenusProps {
@@ -17,6 +18,8 @@ const Menus = ({ userid }: MenusProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
+
+   const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
 
    return (
       <Layout
@@ -32,13 +35,11 @@ const Menus = ({ userid }: MenusProps) => {
             >
                <EventSwitch />
 
-               <Link
-                  href={`/app/${userid}`}
-                  className="rounded-xl p-2 w-full flex flex-col items-center justify-center cursor-pointer"
-               >
+               <Link href={`/app/${userid}`}>
                   <FaHome size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">Home</Text>
                </Link>
+
                <Link href={`/app/${userid}/dms`}>
                   <PiChatsFill size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">DMs</Text>
@@ -47,14 +48,19 @@ const Menus = ({ userid }: MenusProps) => {
             <Flex gap="middle" vertical className="w-full" align="center">
                <CreateDropdown />
                <Link href={`/app/${userid}/profile`}>
-                  <Tooltip title="Sunny Sahsi" placement="right">
+                  <Tooltip
+                     title={
+                        userData?.firstname + ' ' + userData?.lastname || 'User'
+                     }
+                     placement="right"
+                  >
                      <Avatar
                         size={50}
                         shape="square"
                         src={
                            <Image
-                              src="/app/user.jpg"
-                              alt="logo"
+                              src={userData?.profile_picture || '/app/user.jpg'}
+                              alt={userData?.username || 'User'}
                               width={50}
                               height={50}
                               className="rounded-xl"

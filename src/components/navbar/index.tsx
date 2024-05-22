@@ -103,7 +103,7 @@ function Navbar({ setIsDarkMode }: NavbarProps) {
                         {data && (
                            <ProfileDropdown>
                               <NavUserProfile
-                                 profilepicture={data.profilepicture}
+                                 profile_picture={data.profile_picture}
                                  firstname={data.firstname}
                               />
                            </ProfileDropdown>

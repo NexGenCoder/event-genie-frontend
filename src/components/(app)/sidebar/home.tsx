@@ -1,70 +1,101 @@
 'use client'
-import React, { useState } from 'react'
-import {
-   AppstoreOutlined,
-   ContainerOutlined,
-   DesktopOutlined,
-   MailOutlined,
-   MenuFoldOutlined,
-   MenuUnfoldOutlined,
-   PieChartOutlined,
-} from '@ant-design/icons'
-import type { MenuProps } from 'antd'
-import { Button, Layout, Menu, theme } from 'antd'
+import React from 'react'
+import { MdTextsms } from 'react-icons/md'
+import { Layout, Menu, theme } from 'antd'
+import Link from 'next/link'
+import { FaPrayingHands } from 'react-icons/fa'
+import { IoMdHelp } from 'react-icons/io'
+import { RiChatVoiceFill } from 'react-icons/ri'
+import { BsFillCameraReelsFill } from 'react-icons/bs'
+import { GiCook } from 'react-icons/gi'
+import { MdMusicNote } from 'react-icons/md'
+import { HiLightBulb } from 'react-icons/hi'
+import { MdLocationOn } from 'react-icons/md'
+import { FaStore } from 'react-icons/fa'
+import { MdOutlineEventSeat } from 'react-icons/md'
 
-type MenuItem = Required<MenuProps>['items'][number]
+const iconMap: { [key: string]: JSX.Element } = {
+   pray: <FaPrayingHands />,
+   text: <MdTextsms />,
+   help: <IoMdHelp />,
+   voice: <RiChatVoiceFill />,
+   camera: <BsFillCameraReelsFill />,
+   cook: <GiCook />,
+   music: <MdMusicNote />,
+   plan: <HiLightBulb />,
+   venue: <MdLocationOn />,
+   vendor: <FaStore />,
+   decor: <MdOutlineEventSeat />,
+}
 
-const items: MenuItem[] = [
-   { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
-   { key: '2', icon: <DesktopOutlined />, label: 'Option 2' },
-   { key: '3', icon: <ContainerOutlined />, label: 'Option 3' },
+const sampleChannels = [
    {
-      key: 'sub1',
-      label: 'Navigation One',
-      icon: <MailOutlined />,
-      children: [
-         { key: '5', label: 'Option 5' },
-         { key: '6', label: 'Option 6' },
-         { key: '7', label: 'Option 7' },
-         { key: '8', label: 'Option 8' },
+      category: 'Text Channels',
+      channels: [
+         { channelid: 'welcome', name: 'Welcome', icon: 'pray' },
+         { channelid: 'general', name: 'General', icon: 'text' },
+         { channelid: 'help', name: 'Help & Support', icon: 'help' },
       ],
    },
    {
-      key: 'sub2',
-      label: 'Navigation Two',
-      icon: <AppstoreOutlined />,
-      children: [
-         { key: '9', label: 'Option 9' },
-         { key: '10', label: 'Option 10' },
-         {
-            key: 'sub3',
-            label: 'Submenu',
-            children: [
-               { key: '11', label: 'Option 11' },
-               { key: '12', label: 'Option 12' },
-            ],
-         },
+      category: 'Vendors',
+      channels: [{ channelid: 'vendor1', name: 'Vendor 1', icon: 'pray' }],
+   },
+   {
+      category: 'Custom Channels',
+      channels: [
+         { channelid: 'custom1', name: 'Custom Channel 1', icon: 'text' },
+      ],
+   },
+   {
+      category: 'Voice Channels',
+      channels: [
+         { channelid: 'voice1', name: 'Voice Channel 1', icon: 'voice' },
       ],
    },
 ]
 
-const Sidebar = () => {
+interface HomeSidebarProps {
+   userid: string
+}
+
+const HomeSidebar = ({ userid }: HomeSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
 
-   const [collapsed, setCollapsed] = useState(false)
-
-   const toggleCollapsed = () => {
-      setCollapsed(!collapsed)
-   }
-
    return (
       <Layout
-         className="relative w-[200px] h-full px-2 py-4 bg-gray-900"
+         className="relative w-[200px] h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
-      ></Layout>
+      >
+         <Menu
+            defaultSelectedKeys={
+               sampleChannels.map((group) => group.channels[0].channelid) || []
+            }
+            className="h-full border-l border-gray-200"
+            defaultOpenKeys={sampleChannels.map((group) =>
+               group.category.toLowerCase().replace(' ', '-'),
+            )}
+            mode="inline"
+            style={{ backgroundColor: colorBgContainer, color: colorTextBase }}
+            items={sampleChannels.map((group) => ({
+               key: group.category.toLowerCase().replace(' ', '-'),
+               label: group.category,
+               type: 'group',
+               children: group.channels.map((channel) => ({
+                  key: channel.channelid,
+                  icon: iconMap[channel.icon],
+                  label: (
+                     <Link href={`/app/${userid}?channel=${channel.channelid}`}>
+                        {channel.name}
+                     </Link>
+                  ),
+               })),
+            }))}
+         />
+      </Layout>
    )
 }
 
-export default Sidebar
+export default HomeSidebar

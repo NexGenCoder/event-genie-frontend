@@ -42,7 +42,7 @@ function LoginForm() {
       if (value && value.startsWith('0')) {
          value = value.slice(1)
       }
-      if (value && (value.startsWith('+91') || value.startsWith('91'))) {
+      if (value && (value.startsWith('91') || value.startsWith('91'))) {
          value = value.slice(3)
       }
 
@@ -55,7 +55,7 @@ function LoginForm() {
    const handleSendOtp = async () => {
       const requestBody = {
          mobile: formData.mobile,
-         countrycode: '91',
+         countryCode: '91',
       }
       try {
          const response = await sendOtp(requestBody).unwrap()

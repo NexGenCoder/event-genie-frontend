@@ -16,9 +16,10 @@ import { imageUpload } from '@/utils/uploadImage'
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useDebounce } from '@/hooks/useDebounce'
 import ImageUpload from '@/components/profile/image-upload'
+import { IUser } from '@/types/user'
 
 interface AddUserDetailsFormProps {
-   userData: any
+   userData: IUser
 }
 
 export default function AddUserDetailsForm({
@@ -26,11 +27,11 @@ export default function AddUserDetailsForm({
 }: AddUserDetailsFormProps) {
    const [image, setImage] = useState<File | null>(null)
    const [formData, setFormData] = useState({
-      username: userData.username || '',
-      email: userData.email || '',
-      firstname: userData.firstname || '',
-      lastname: userData.lastname || '',
-      bio: userData.bio || '',
+      username: userData?.username || '',
+      email: userData?.email || '',
+      firstname: userData?.firstname || '',
+      lastname: userData?.lastname || '',
+      bio: userData?.bio || '',
    })
 
    const [skip, setSkip] = useState(true)
@@ -59,7 +60,7 @@ export default function AddUserDetailsForm({
       const imageUrl = image ? await imageUpload(image, 'profile') : null
       const formDataWithImage = {
          ...formData,
-         profilepicture: imageUrl,
+         profile_picture: imageUrl || userData?.profile_picture,
       }
 
       try {
@@ -86,7 +87,7 @@ export default function AddUserDetailsForm({
             <div className="absolute  md:top-[.5rem] top-[1rem]">
                <ImageUpload
                   setImage={setImage}
-                  defaultImage={userData?.profilepicture}
+                  defaultImage={userData?.profile_picture}
                />
             </div>
          </Tooltip>
