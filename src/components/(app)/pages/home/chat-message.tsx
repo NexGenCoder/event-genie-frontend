@@ -4,7 +4,7 @@ import React from 'react'
 const { Text } = Typography
 
 interface ChatMessageProps {
-   type: string
+   type: 'text' | 'image' | 'video'
    content: string
    sender: {
       name: string

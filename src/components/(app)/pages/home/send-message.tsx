@@ -56,6 +56,13 @@ const SendMessage: React.FC<SendMessageProps> = ({ onSend }) => {
       setPreview(null)
    }
 
+   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+         e.preventDefault()
+         handleSend()
+      }
+   }
+
    return (
       <Flex
          className="sticky bottom-0 left-0 w-full p-4"
@@ -119,8 +126,9 @@ const SendMessage: React.FC<SendMessageProps> = ({ onSend }) => {
                className="w-full p-2 border border-gray-300 rounded-md"
                value={message}
                onChange={(e) => setMessage(e.target.value)}
+               onKeyDown={handleKeyDown}
                placeholder="Type your message..."
-               autoSize
+               autoSize={{ minRows: 1, maxRows: 3 }}
             />
             <input
                type="file"
