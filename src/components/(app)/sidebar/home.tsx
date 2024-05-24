@@ -27,33 +27,47 @@ const iconMap: { [key: string]: JSX.Element } = {
    vendor: <FaStore />,
    decor: <MdOutlineEventSeat />,
 }
-
-const sampleChannels = [
-   {
-      category: 'Text Channels',
-      channels: [
-         { channelid: 'welcome', name: 'Welcome', icon: 'pray' },
-         { channelid: 'general', name: 'General', icon: 'text' },
-         { channelid: 'help', name: 'Help & Support', icon: 'help' },
-      ],
-   },
-   {
-      category: 'Vendors',
-      channels: [{ channelid: 'vendor1', name: 'Vendor 1', icon: 'pray' }],
-   },
-   {
-      category: 'Custom Channels',
-      channels: [
-         { channelid: 'custom1', name: 'Custom Channel 1', icon: 'text' },
-      ],
-   },
-   {
-      category: 'Voice Channels',
-      channels: [
-         { channelid: 'voice1', name: 'Voice Channel 1', icon: 'voice' },
-      ],
-   },
-]
+const sampleChannelList = {
+   message: 'Channel list retrieved successfully',
+   data: [
+      {
+         categoryid: 'cat1',
+         eventid: 'event1',
+         name: 'Text Channels',
+         isPrivate: false,
+         channels: [
+            { channelid: 'ch1', name: 'Welcome', icon: 'pray' },
+            { channelid: 'ch2', name: 'General', icon: 'text' },
+            { channelid: 'ch3', name: 'Help & Support', icon: 'help' },
+         ],
+      },
+      {
+         categoryid: 'cat2',
+         eventid: 'event1',
+         name: 'Vendors',
+         isPrivate: false,
+         channels: [{ channelid: 'ch4', name: 'Vendor 1', icon: 'vendor' }],
+      },
+      {
+         categoryid: 'cat3',
+         eventid: 'event1',
+         name: 'Custom Channels',
+         isPrivate: false,
+         channels: [
+            { channelid: 'ch5', name: 'Custom Channel 1', icon: 'text' },
+         ],
+      },
+      {
+         categoryid: 'cat4',
+         eventid: 'event1',
+         name: 'Voice Channels',
+         isPrivate: false,
+         channels: [
+            { channelid: 'ch6', name: 'Voice Channel 1', icon: 'voice' },
+         ],
+      },
+   ],
+}
 
 interface HomeSidebarProps {
    userid: string
@@ -71,14 +85,14 @@ const HomeSidebar = ({ userid }: HomeSidebarProps) => {
       >
          <Menu
             className="h-full border-l border-gray-200"
-            defaultOpenKeys={sampleChannels.map((group) =>
-               group.category.toLowerCase().replace(' ', '-'),
+            defaultOpenKeys={sampleChannelList.data.map((group) =>
+               group.name.toLowerCase().replace(' ', '-'),
             )}
             mode="inline"
             style={{ backgroundColor: colorBgContainer, color: colorTextBase }}
-            items={sampleChannels.map((group) => ({
-               key: group.category.toLowerCase().replace(' ', '-'),
-               label: group.category,
+            items={sampleChannelList.data.map((group) => ({
+               key: group.name.toLowerCase().replace(' ', '-'),
+               label: group.name,
                type: 'group',
                children: group.channels.map((channel) => ({
                   key: channel.channelid,

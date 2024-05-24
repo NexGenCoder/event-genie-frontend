@@ -1,4 +1,5 @@
 import UserAccount from '@/components/(app)/pages/account'
+import UserHome from '@/components/(app)/pages/home'
 import HomeSidebar from '@/components/(app)/sidebar/home'
 import Menus from '@/components/(app)/sidebar/menu'
 import { Flex, Layout } from 'antd'
@@ -18,7 +19,7 @@ function UserHomePage({ params }: UserHomePageProps) {
                <Menus userid={params.userid} />
                <HomeSidebar userid={params.userid} />
             </Flex>
-            <UserAccount />
+            <UserHome />
          </Flex>
       </Layout>
    )
