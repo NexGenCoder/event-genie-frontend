@@ -5,11 +5,17 @@ import { imageUpload } from '@/utils/uploadImage'
 
 interface Step2Props {
    prevStep: () => void
+   nextStep: () => void
    handleEventDataChange: (data: any) => void
    eventType: string
 }
 
-const Step2 = ({ prevStep, handleEventDataChange, eventType }: Step2Props) => {
+const Step2 = ({
+   prevStep,
+   nextStep,
+   handleEventDataChange,
+   eventType,
+}: Step2Props) => {
    const [image, setImage] = useState<File | null>(null)
    const [form] = Form.useForm()
    const userData = {
@@ -18,14 +24,15 @@ const Step2 = ({ prevStep, handleEventDataChange, eventType }: Step2Props) => {
    }
 
    const onFinish = async (values: any) => {
-      const imageUrl = image ? await imageUpload(image, 'profile') : null
+      // const imageUrl = image ? await imageUpload(image, 'profile') : null
       const eventData = {
          ...values,
          eventType,
-         eventLogo: imageUrl,
+         // eventLogo: imageUrl,
       }
       handleEventDataChange(eventData)
       console.log(eventData)
+      nextStep()
    }
 
    return (
@@ -40,14 +47,6 @@ const Step2 = ({ prevStep, handleEventDataChange, eventType }: Step2Props) => {
             label="Event Logo"
             className="w-full top-0 left-0 flex justify-center items-center"
          >
-            {/* <Upload
-               beforeUpload={() => false}
-               maxCount={5}
-               listType="picture-circle"
-               className="w-full"
-            >
-               <Button icon={<UploadOutlined />}>Upload</Button>
-            </Upload> */}
             <ImageUpload
                setImage={setImage}
                defaultImage={userData?.profile_picture}

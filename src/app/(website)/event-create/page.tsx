@@ -4,7 +4,7 @@ import React from 'react'
 
 function EventCreatePage() {
    return (
-      <Layout className="flex min-h-screen flex-col items-center justify-between p-6">
+      <Layout className="flex min-h-screen flex-col items-center justify-between p-6 w-full">
          <EventCreation />
       </Layout>
    )

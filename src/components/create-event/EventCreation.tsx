@@ -2,7 +2,9 @@
 import React, { useState } from 'react'
 import Step1 from './Step1'
 import Step2 from './Step2'
+import Step3 from './Step3'
 import { Layout } from 'antd'
+import { Steps } from 'antd'
 
 const EventCreation: React.FC = () => {
    const [currentStep, setCurrentStep] = useState(0)
@@ -29,13 +31,20 @@ const EventCreation: React.FC = () => {
       <Step2
          key="step2"
          prevStep={prevStep}
+         nextStep={nextStep}
          handleEventDataChange={handleEventDataChange}
          eventType={eventData.eventType}
       />,
+      <Step3 key="step3" />,
    ]
 
    return (
-      <Layout className="flex min-h-screen flex-col items-center justify-between p-6">
+      <Layout className="w-full flex flex-col items-center justify-center md:w-[80%] ">
+         <Steps current={currentStep} size="small" className="pb-2 ">
+            <Steps.Step title="Select Event Type" />
+            <Steps.Step title="Event Details" />
+            <Steps.Step title="Event Created" />
+         </Steps>
          {steps[currentStep]}
       </Layout>
    )
