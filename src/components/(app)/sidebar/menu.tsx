@@ -7,8 +7,13 @@ import { FaHome } from 'react-icons/fa'
 import { MdOutlineEventSeat } from 'react-icons/md'
 import { PiChatsFill } from 'react-icons/pi'
 
-import { useGetUserEventsQuery } from '@/app/services/eventsApi'
+import {
+   useGetEventCategoriesQuery,
+   useGetEventDetailsQuery,
+   useGetUserEventsQuery,
+} from '@/app/services/eventsApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import { IEvent } from '@/types/event'
 
 import CreateDropdown from './dropdowns/create-dropdown'
 import EventSwitch from './dropdowns/event-switch'
@@ -26,6 +31,7 @@ const Menus = ({ eventid }: MenusProps) => {
 
    const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
    const { data: userEvents } = useGetUserEventsQuery()
+   const { data: eventDetails } = useGetEventDetailsQuery(eventid)
 
    return (
       <Layout
@@ -39,7 +45,12 @@ const Menus = ({ eventid }: MenusProps) => {
                className="h-full w-full"
                align="center"
             >
-               {userEvents && <EventSwitch userEvents={userEvents.data} />}
+               {userEvents && eventDetails && (
+                  <EventSwitch
+                     userEvents={userEvents.data}
+                     eventDetails={eventDetails.data}
+                  />
+               )}
 
                <Link href={`/app/${eventid}`}>
                   <FaHome size={30} color={colorTextBase} />
@@ -56,7 +67,9 @@ const Menus = ({ eventid }: MenusProps) => {
                </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">
-               <CreateDropdown />
+               {eventDetails && (
+                  <CreateDropdown eventDetails={eventDetails.data} />
+               )}
                <Link href={`/app/${eventid}/profile`}>
                   <Tooltip
                      title={

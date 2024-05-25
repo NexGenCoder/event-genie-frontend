@@ -1,8 +1,15 @@
 import { api } from '@/app/services/api'
-import { IChannelLIst } from '@/types/channel'
+import {
+   ICategories,
+   IChannelCategoryList,
+   IChannelLIst,
+   ICreateChannel,
+   ICreateChannelCategory,
+} from '@/types/channel'
 import {
    ICreateEventBody,
    ICreateEventResponse,
+   IEventDetailsResponse,
    IEventTypeResponse,
    IUserEventsList,
 } from '@/types/event'
@@ -25,9 +32,33 @@ export const eventsApi = api.injectEndpoints({
          query: () => '/events',
          providesTags: ['UserEvents'],
       }),
-      getEventCategories: builder.query<IChannelLIst, string>({
+      getEventChannels: builder.query<IChannelLIst, string>({
+         query: (eventid) => `/event/channels/${eventid}`,
+         providesTags: ['EventChannels'],
+      }),
+      getEventCategories: builder.query<ICategories, string>({
          query: (eventid) => `/event/categories/${eventid}`,
          providesTags: ['EventChannels'],
+      }),
+      getEventDetails: builder.query<IEventDetailsResponse, string>({
+         query: (eventid) => `/event/${eventid}`,
+         providesTags: ['EventDetails'],
+      }),
+      createEventChannel: builder.mutation<any, ICreateChannel>({
+         query: (body) => ({
+            url: '/event/channel',
+            method: 'POST',
+            body,
+         }),
+         invalidatesTags: ['EventChannels'],
+      }),
+      createEventCategory: builder.mutation<any, ICreateChannelCategory>({
+         query: (body) => ({
+            url: '/event/category',
+            method: 'POST',
+            body,
+         }),
+         invalidatesTags: ['EventCategories'],
       }),
    }),
 })
@@ -36,5 +67,9 @@ export const {
    useGetEventTypesQuery,
    useCreateEventMutation,
    useGetUserEventsQuery,
+   useGetEventChannelsQuery,
    useGetEventCategoriesQuery,
+   useGetEventDetailsQuery,
+   useCreateEventChannelMutation,
+   useCreateEventCategoryMutation,
 } = eventsApi

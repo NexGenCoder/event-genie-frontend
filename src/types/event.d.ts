@@ -51,3 +51,8 @@ export type IUserEventsList = {
    message: string
    data: IEvent[]
 }
+
+export type IEventDetailsResponse = {
+   message: string
+   data: IEvent
+}

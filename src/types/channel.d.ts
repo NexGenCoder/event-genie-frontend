@@ -7,6 +7,10 @@ export type IChannelCategory = {
    updated_at: string
 }
 
+export type ICategories = {
+   message: string
+   data: IChannelCategory[]
+}
 export type ICreateChannelCategory = {
    eventid: string
    name: string
