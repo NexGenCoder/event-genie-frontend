@@ -8,10 +8,10 @@ import { UserOutlined } from '@ant-design/icons'
 const { Text, Link } = Typography
 
 interface NavUserProfileProps {
-   profilepicture: string
+   profile_picture: string
    firstname: string
 }
-function NavUserProfile({ profilepicture, firstname }: NavUserProfileProps) {
+function NavUserProfile({ profile_picture, firstname }: NavUserProfileProps) {
    return (
       <button className="flex gap-2 text-sm  items-center rounded-xl">
          <Avatar
@@ -19,7 +19,7 @@ function NavUserProfile({ profilepicture, firstname }: NavUserProfileProps) {
             size="large"
             src={
                <Image
-                  src={profilepicture || '/user.png'}
+                  src={profile_picture || '/user.png'}
                   alt="Profile Picture"
                   width={40}
                   height={40}

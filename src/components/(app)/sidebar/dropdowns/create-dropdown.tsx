@@ -1,11 +1,28 @@
-import React, { useState } from 'react'
-import { Button, Flex, Modal, Tooltip, theme, Typography, Dropdown } from 'antd'
-import { MdAddCircle } from 'react-icons/md'
-import { MdPersonAdd } from 'react-icons/md'
+import { Button, Dropdown, Flex, theme, Tooltip, Typography } from 'antd'
+import React from 'react'
 import { BiSolidMessageSquareAdd } from 'react-icons/bi'
+import { MdAddCircle, MdPersonAdd } from 'react-icons/md'
+
+import { useGetEventCategoriesQuery } from '@/app/services/eventsApi'
+import { IEvent } from '@/types/event'
+
+import CreateChannelModal from '../modals/create-channel'
+import CreateRsvpModal from '../modals/invite-people'
+import { useGetUsersQuery } from '@/app/services/authApi'
+
 const { Text } = Typography
 
-const CreateDropdown = () => {
+//
+interface CreateDropdownProps {
+   eventDetails: IEvent
+}
+
+const CreateDropdown = ({ eventDetails }: CreateDropdownProps) => {
+   const [createChannelModal, setCreateChannelModal] = React.useState(false)
+   const [createRsvpModal, setCreateRsvpModal] = React.useState(false)
+   const { data: categories } = useGetEventCategoriesQuery(eventDetails.eventid)
+   const { data: users, isLoading } = useGetUsersQuery()
+
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
@@ -14,6 +31,7 @@ const CreateDropdown = () => {
       <>
          <Dropdown
             arrow={{ pointAtCenter: true }}
+            trigger={['click']}
             overlay={
                <Flex
                   vertical
@@ -24,6 +42,7 @@ const CreateDropdown = () => {
                      type="text"
                      className="flex items-center justify-center p-4"
                      icon={<MdPersonAdd color={colorTextBase} />}
+                     onClick={() => setCreateRsvpModal(true)}
                   >
                      <Text className="text-xs">Invite People</Text>
                   </Button>
@@ -31,6 +50,7 @@ const CreateDropdown = () => {
                      type="text"
                      className="flex items-center justify-center p-4"
                      icon={<BiSolidMessageSquareAdd color={colorTextBase} />}
+                     onClick={() => setCreateChannelModal(true)}
                   >
                      <Text className="text-xs">Text Channel</Text>
                   </Button>
@@ -44,6 +64,22 @@ const CreateDropdown = () => {
                />
             </Tooltip>
          </Dropdown>
+         {categories && (
+            <CreateChannelModal
+               closeModal={() => setCreateChannelModal(false)}
+               isModalOpen={createChannelModal}
+               eventDetails={eventDetails}
+               categories={categories.data}
+            />
+         )}
+         {createRsvpModal && users && (
+            <CreateRsvpModal
+               closeModal={() => setCreateRsvpModal(false)}
+               isModalOpen={createRsvpModal}
+               eventDetails={eventDetails}
+               users={users.users}
+            />
+         )}
       </>
    )
 }

@@ -1,18 +1,22 @@
 'use client'
+import { Typography } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
+
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+
 import ProfileForm from './profile-form'
-import { Typography } from 'antd'
 
 const { Title } = Typography
 
 function UserAccount() {
    const [searchParams] = useSearchParams()
+   const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
 
    return (
       <div className="w-full">
          {searchParams && searchParams[1] === 'edit-profile' ? (
-            <ProfileForm userData={{}} />
+            <>{userData && <ProfileForm userData={userData} />}</>
          ) : searchParams && searchParams[1] === 'profile' ? (
             <Title>Profile</Title>
          ) : searchParams && searchParams[1] === 'events' ? (

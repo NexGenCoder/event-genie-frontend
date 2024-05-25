@@ -1,14 +1,12 @@
 'use client'
-import './../globals.css'
+import '../globals.css'
 
-import { ConfigProvider, Tooltip, theme } from 'antd'
+import { ConfigProvider, theme } from 'antd'
 import { Inter } from 'next/font/google'
 import { useState } from 'react'
 import { Provider } from 'react-redux'
-import { MdDarkMode } from 'react-icons/md'
-import { CiLight } from 'react-icons/ci'
+
 import { store } from '@/app/store'
-import { FloatButton } from 'antd'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,18 +29,6 @@ export default function RootLayout({
                   }}
                >
                   {children}
-                  <Tooltip
-                     title={isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                     placement="left"
-                  >
-                     <FloatButton
-                        shape="square"
-                        type="default"
-                        style={{ right: 94 }}
-                        icon={isDarkMode ? <CiLight /> : <MdDarkMode />}
-                        onClick={() => setIsDarkMode(!isDarkMode)}
-                     />
-                  </Tooltip>
                </ConfigProvider>
             </Provider>
          </body>

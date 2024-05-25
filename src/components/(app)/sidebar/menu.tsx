@@ -1,22 +1,37 @@
 'use client'
-import { Flex, Layout, Tooltip, theme, Typography, Avatar } from 'antd'
+import { Avatar, Flex, Layout, theme, Tooltip, Typography } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { FaHome } from 'react-icons/fa'
+import { MdOutlineEventSeat } from 'react-icons/md'
 import { PiChatsFill } from 'react-icons/pi'
-import EventSwitch from './dropdowns/event-switch'
+
+import {
+   useGetEventCategoriesQuery,
+   useGetEventDetailsQuery,
+   useGetUserEventsQuery,
+} from '@/app/services/eventsApi'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import { IEvent } from '@/types/event'
+
 import CreateDropdown from './dropdowns/create-dropdown'
-import Link from 'next/link'
+import EventSwitch from './dropdowns/event-switch'
+
 const { Text } = Typography
 
 interface MenusProps {
-   userid: string
+   eventid: string
 }
 
-const Menus = ({ userid }: MenusProps) => {
+const Menus = ({ eventid }: MenusProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
+
+   const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
+   const { data: userEvents } = useGetUserEventsQuery()
+   const { data: eventDetails } = useGetEventDetailsQuery(eventid)
 
    return (
       <Layout
@@ -30,31 +45,45 @@ const Menus = ({ userid }: MenusProps) => {
                className="h-full w-full"
                align="center"
             >
-               <EventSwitch />
+               {userEvents && eventDetails && (
+                  <EventSwitch
+                     userEvents={userEvents.data}
+                     eventDetails={eventDetails.data}
+                  />
+               )}
 
-               <Link
-                  href={`/app/${userid}`}
-                  className="rounded-xl p-2 w-full flex flex-col items-center justify-center cursor-pointer"
-               >
+               <Link href={`/app/${eventid}`}>
                   <FaHome size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">Home</Text>
                </Link>
-               <Link href={`/app/${userid}/dms`}>
+
+               <Link href={`/app/${eventid}/dms`}>
                   <PiChatsFill size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">DMs</Text>
                </Link>
+               <Link href={`/app/${eventid}/events`}>
+                  <MdOutlineEventSeat size={30} color={colorTextBase} />
+                  <Text className="text-xs text-center">Events</Text>
+               </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">
-               <CreateDropdown />
-               <Link href={`/app/${userid}/profile`}>
-                  <Tooltip title="Sunny Sahsi" placement="right">
+               {eventDetails && (
+                  <CreateDropdown eventDetails={eventDetails.data} />
+               )}
+               <Link href={`/app/${eventid}/profile`}>
+                  <Tooltip
+                     title={
+                        userData?.firstname + ' ' + userData?.lastname || 'User'
+                     }
+                     placement="right"
+                  >
                      <Avatar
                         size={50}
                         shape="square"
                         src={
                            <Image
-                              src="/app/user.jpg"
-                              alt="logo"
+                              src={userData?.profile_picture || '/app/user.jpg'}
+                              alt={userData?.username || 'User'}
                               width={50}
                               height={50}
                               className="rounded-xl"

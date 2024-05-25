@@ -1,8 +1,9 @@
 import { api } from '@/app/services/api'
+import { IUserResponse } from '@/types/user'
 
 type ISendOtp = {
    mobile: string
-   countrycode: string
+   country_code: string
 }
 
 type IVerifyOtp = {
@@ -15,7 +16,7 @@ type IAddUserDetails = {
    email: string
    firstname: string
    lastname: string
-   profilepicture: string
+   profile_picture: string
    bio: string
 }
 
@@ -24,25 +25,21 @@ type ISendOtpResponse = {
    data: {
       otp: string
       mobile: string
-      countrycode: string
+      country_code: string
       expiresat: string
    }
 }
 
-type IUserResponse = {
+export type IUser = {
+   userid: string
+   username?: string
+   firstname: string
+   lastname: string
+}
+
+type IGetUsersResponse = {
    message: string
-   data?: {
-      id: string
-      username: string
-      email: string
-      firstname: string
-      lastname: string
-      profilepicture: string
-      bio: string
-      ismobileverified: boolean
-      isemailverified: boolean
-      isprofilecompleted: boolean
-   }
+   users: IUser[]
 }
 
 type ICheckusernameResponse = {
@@ -92,6 +89,10 @@ export const authApi = api.injectEndpoints({
          }),
          providesTags: ['CheckUsername'],
       }),
+      getUsers: builder.query<IGetUsersResponse, void>({
+         query: () => '/users',
+         providesTags: ['Users'],
+      }),
    }),
 })
 export const {
@@ -101,4 +102,5 @@ export const {
    useAddUserDetailsMutation,
    useGetSelfQuery,
    useCheckusernameQuery,
+   useGetUsersQuery,
 } = authApi
