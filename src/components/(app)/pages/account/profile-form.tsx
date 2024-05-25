@@ -114,7 +114,7 @@ export default function AddUserDetailsForm({
                <div className="flex flex-col gap-2 w-full">
                   <Text className="">Last Name</Text>
                   <Input
-                     name="lastName"
+                     name="lastname"
                      value={formData.lastname}
                      onChange={handleChange}
                      placeholder="Enter your last name"

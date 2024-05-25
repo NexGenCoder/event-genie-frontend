@@ -1,5 +1,13 @@
 'use client'
-import { Button, Flex, Input, InputNumber, theme, Typography } from 'antd'
+import {
+   Button,
+   Flex,
+   Input,
+   InputNumber,
+   Layout,
+   theme,
+   Typography,
+} from 'antd'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
@@ -16,7 +24,7 @@ import { API } from '@/constants'
 
 import { CountrySelector } from './country-selector'
 
-const { Link, Text } = Typography
+const { Link, Text, Title } = Typography
 import type { GetProp } from 'antd'
 import type { OTPProps } from 'antd/es/input/OTP'
 function LoginForm() {
@@ -55,7 +63,7 @@ function LoginForm() {
    const handleSendOtp = async () => {
       const requestBody = {
          mobile: formData.mobile,
-         countryCode: '91',
+         country_code: '91',
       }
       try {
          const response = await sendOtp(requestBody).unwrap()
@@ -96,7 +104,10 @@ function LoginForm() {
    }
 
    return (
-      <div className="flex flex-col justify-center w-full  rounded-[20px] p-4">
+      <Layout className="flex flex-col justify-center w-full p-4 rounded-[20px]">
+         <Title level={2} className="text-center">
+            Login
+         </Title>
          <div className="flex flex-col gap-2">
             {!showOtp ? (
                <div className="flex flex-col gap-4 w-full">
@@ -122,7 +133,7 @@ function LoginForm() {
                         onChange={mobileInputOnChange}
                      />
                      <Button
-                        type="primary"
+                        type="default"
                         className="flex justify-center items-center gap-2"
                         icon={<MdOutlineSendToMobile />}
                         loading={isSendingOtp}
@@ -177,7 +188,7 @@ function LoginForm() {
 
          <div className="flex items-center gap-4 my-8">
             <hr className="flex-1" />
-            <span className="font-semibold">OR</span>
+            <Text className="font-semibold">OR</Text>
             <hr className="flex-1" />
          </div>
 
@@ -185,17 +196,16 @@ function LoginForm() {
             <Text className="md:text-lg text-md font-semibold">
                Continue with your social account
             </Text>
-            <Link
-               className="flex justify-center item-center bg--100 border py-2 px-4 rounded-md hover:bg-gray-200  items-center gap-2 text-black w-fit"
+            <Button
+               className="flex justify-center item-center border py-2 px-4 rounded-md hover:bg-gray-200  items-center gap-2 text-black w-fit"
                href={`${API}/auth/google`}
                style={{ color: colorTextBase }}
             >
                <FcGoogle className="inline-block mr-2" /> Sign In With Google
-            </Link>
+            </Button>
          </div>
-
          <Toaster />
-      </div>
+      </Layout>
    )
 }
 

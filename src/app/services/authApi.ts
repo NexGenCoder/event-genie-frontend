@@ -3,7 +3,7 @@ import { IUserResponse } from '@/types/user'
 
 type ISendOtp = {
    mobile: string
-   countryCode: string
+   country_code: string
 }
 
 type IVerifyOtp = {
@@ -25,7 +25,7 @@ type ISendOtpResponse = {
    data: {
       otp: string
       mobile: string
-      countryCode: string
+      country_code: string
       expiresat: string
    }
 }

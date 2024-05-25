@@ -5,10 +5,13 @@ import Step2 from './Step2'
 import Step3 from './Step3'
 import { Layout } from 'antd'
 import { Steps } from 'antd'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import { useRouter } from 'next/navigation'
 
 const EventCreation: React.FC = () => {
    const [currentStep, setCurrentStep] = useState(0)
    const [eventData, setEventData] = useState<any>({})
+   const router = useRouter()
 
    const nextStep = () => {
       setCurrentStep(currentStep + 1)

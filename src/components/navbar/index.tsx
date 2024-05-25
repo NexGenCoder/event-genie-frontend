@@ -1,49 +1,19 @@
-import { Button, Flex, Switch, theme, Typography } from 'antd'
+import { Flex, theme } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
+import React from 'react'
 import { IoLogIn } from 'react-icons/io5'
 
-import { useLogoutMutation } from '@/app/services/authApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
-import LogoImage from '../../../public/OccasionGuru.jpeg'
-import LoginModal from '../login/login-modal'
 import ProfileDropdown from './profile-dropdown'
 import NavUserProfile from './user-profile'
 import NavUserProfileShimmer from './user-profile-shimmer'
 
-interface NavbarProps {
-   setIsDarkMode: (isDarkMode: boolean) => void
-}
-
-function Navbar({ setIsDarkMode }: NavbarProps) {
+function Navbar() {
    const { isLoggedin, data, isLoading } = useIsAuthenticated()
-   const [logout] = useLogoutMutation()
-   const router = useRouter()
 
-   const [isModalOpen, setIsModalOpen] = useState(false)
-
-   const showModal = () => {
-      setIsModalOpen(true)
-   }
-
-   const handleCancel = () => {
-      setIsModalOpen(false)
-   }
-   const handleLogout = async () => {
-      try {
-         await logout()
-         toast.success('Logged out successfully', { position: 'top-right' })
-         router.push('/login')
-      } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
-         console.error(error)
-      }
-   }
    const {
       token: { colorBgContainer, colorTextBase },
    } = theme.useToken()
@@ -59,13 +29,13 @@ function Navbar({ setIsDarkMode }: NavbarProps) {
                style={{ color: colorTextBase }}
             >
                <Image
-                  src={LogoImage}
+                  src="/logo.jpg"
                   width={35}
                   height={35}
-                  alt="Occasion Guru Logo"
+                  alt="Event Genie Logo"
                   className="rounded-full"
                />
-               Occasion Guru
+               Event Genie
             </Link>
             <nav className="md:flex items-center text-sm hidden ">
                <Link
@@ -111,25 +81,19 @@ function Navbar({ setIsDarkMode }: NavbarProps) {
                      </>
                   ) : (
                      <>
-                        <Button
-                           className=" py-2 px-5 flex items-center gap-2"
-                           onClick={showModal}
-                           icon={<IoLogIn />}
+                        <Link
+                           href="/login"
+                           title="Login"
+                           className="flex justify-center items-center border rounded gap-2 py-2 px-5 hover:bg-gray-200 hover:white"
                         >
+                           <IoLogIn />
                            Login
-                        </Button>
-                        <Switch
-                           checkedChildren="🌞"
-                           unCheckedChildren="🌜"
-                           defaultChecked
-                           onChange={(checked) => setIsDarkMode(checked)}
-                        />
+                        </Link>
                      </>
                   )}
                </>
             )}
          </div>
-         <LoginModal isModalOpen={isModalOpen} handleCancel={handleCancel} />
       </Header>
    )
 }

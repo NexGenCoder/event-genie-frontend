@@ -101,7 +101,10 @@ const Step1 = ({ nextStep, handleEventDataChange }: Step1Props) => {
                   <Button
                      type="primary"
                      key="reset"
-                     onClick={() => onSearch('')}
+                     onClick={() => {
+                        onSearch('')
+                        setEventTypes(response?.data as IEventType[])
+                     }}
                   >
                      Reset
                   </Button>
