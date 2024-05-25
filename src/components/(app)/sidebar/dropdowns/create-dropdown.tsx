@@ -7,6 +7,8 @@ import { useGetEventCategoriesQuery } from '@/app/services/eventsApi'
 import { IEvent } from '@/types/event'
 
 import CreateChannelModal from '../modals/create-channel'
+import CreateRsvpModal from '../modals/invite-people'
+import { useGetUsersQuery } from '@/app/services/authApi'
 
 const { Text } = Typography
 
@@ -17,7 +19,9 @@ interface CreateDropdownProps {
 
 const CreateDropdown = ({ eventDetails }: CreateDropdownProps) => {
    const [createChannelModal, setCreateChannelModal] = React.useState(false)
+   const [createRsvpModal, setCreateRsvpModal] = React.useState(false)
    const { data: categories } = useGetEventCategoriesQuery(eventDetails.eventid)
+   const { data: users, isLoading } = useGetUsersQuery()
 
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
@@ -38,6 +42,7 @@ const CreateDropdown = ({ eventDetails }: CreateDropdownProps) => {
                      type="text"
                      className="flex items-center justify-center p-4"
                      icon={<MdPersonAdd color={colorTextBase} />}
+                     onClick={() => setCreateRsvpModal(true)}
                   >
                      <Text className="text-xs">Invite People</Text>
                   </Button>
@@ -65,6 +70,14 @@ const CreateDropdown = ({ eventDetails }: CreateDropdownProps) => {
                isModalOpen={createChannelModal}
                eventDetails={eventDetails}
                categories={categories.data}
+            />
+         )}
+         {createRsvpModal && users && (
+            <CreateRsvpModal
+               closeModal={() => setCreateRsvpModal(false)}
+               isModalOpen={createRsvpModal}
+               eventDetails={eventDetails}
+               users={users.users}
             />
          )}
       </>

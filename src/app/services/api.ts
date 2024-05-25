@@ -23,6 +23,11 @@ export const api = createApi({
       'EventDetails',
       'CreateEventChannel',
       'CreateEventCategory',
+      'Users',
+      'CreateDirectRsvp',
+      'CreateOpenRsvp',
+      'UpdateDirectRsvp',
+      'UpdateOpenRsvp',
    ],
    endpoints: () => ({}),
 })

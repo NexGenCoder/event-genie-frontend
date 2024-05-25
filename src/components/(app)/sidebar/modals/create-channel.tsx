@@ -8,9 +8,10 @@ import {
    Switch,
    Tooltip,
    Typography,
+   message,
+   Result,
 } from 'antd'
 import React, { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 import { BsFillCameraReelsFill } from 'react-icons/bs'
 import { FaPrayingHands, FaStore } from 'react-icons/fa'
 import { GiCook } from 'react-icons/gi'
@@ -71,6 +72,8 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
    const [newCategoryForm] = Form.useForm()
    const [categoryModalOpen, setCategoryModalOpen] = useState(false)
    const [selectedIcon, setSelectedIcon] = useState<string>('')
+   const [messageApi, contextHolder] = message.useMessage()
+   const [showResult, setShowResult] = useState(false)
 
    const [createChannel] = useCreateEventChannelMutation()
    const [createCategory] = useCreateEventCategoryMutation()
@@ -88,11 +91,19 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
       }
       try {
          await createChannel(requestBody).unwrap()
-         toast.success('Channel Created', { position: 'top-right' })
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Creating Channel...',
+               duration: 2.5,
+            })
+            .then(() => {
+               messageApi.success(`Channel Created Successfully`)
+               setShowResult(true)
+            })
          queryClient.refetch()
-         closeModal()
       } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
+         messageApi.error("Couldn't create Channel")
          console.error(error)
       }
    }
@@ -104,162 +115,189 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
       }
       try {
          await createCategory(requestBody).unwrap()
-         toast.success('Category Created', { position: 'top-right' })
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Creating Category...',
+               duration: 2.5,
+            })
+            .then(() => {
+               messageApi.success(`Category Created Successfully`)
+               setShowResult(true)
+            })
          queryClient.refetch()
          setCategoryModalOpen(false)
       } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
-         console.error(error)
+         messageApi.error("Couldn't create Category")
       }
    }
 
    return (
       <>
          <Modal
-            title={`Create a channel in ${eventDetails.event_name} event`}
+            title={showResult ? 'Channel Created' : 'Create a new Channel'}
             onCancel={closeModal}
             footer={null}
             open={isModalOpen}
          >
-            <Form
-               form={form}
-               onFinish={handleCreateChannel}
-               layout="vertical"
-               initialValues={{ categoryid: categories[0]?.categoryid }}
-            >
-               <Flex justify="space-between" gap="middle" align="center">
-                  <Form.Item
-                     name="categoryid"
-                     label="Select Channel Category"
-                     rules={[
-                        { required: true, message: 'Please select a category' },
-                     ]}
-                     className="w-full"
-                  >
-                     <Select
-                        showSearch
-                        placeholder="Select a category"
-                        optionFilterProp="children"
+            {!showResult ? (
+               <Form
+                  form={form}
+                  onFinish={handleCreateChannel}
+                  layout="vertical"
+                  initialValues={{ categoryid: categories[0]?.categoryid }}
+               >
+                  <Flex justify="space-between" gap="middle" align="center">
+                     <Form.Item
+                        name="categoryid"
+                        label="Select Channel Category"
+                        rules={[
+                           {
+                              required: true,
+                              message: 'Please select a category',
+                           },
+                        ]}
                         className="w-full"
                      >
-                        {categories.map((category) => (
-                           <Option
-                              key={category.categoryid}
-                              value={category.categoryid}
-                           >
-                              {category.name}
-                           </Option>
-                        ))}
-                     </Select>
-                  </Form.Item>
-                  <Button
-                     type="link"
-                     onClick={() => setCategoryModalOpen(true)}
-                  >
-                     Create a new category
-                  </Button>
-               </Flex>
-               <Flex justify="space-between" gap="middle">
+                        <Select
+                           showSearch
+                           placeholder="Select a category"
+                           optionFilterProp="children"
+                           className="w-full"
+                        >
+                           {categories.map((category) => (
+                              <Option
+                                 key={category.categoryid}
+                                 value={category.categoryid}
+                              >
+                                 {category.name}
+                              </Option>
+                           ))}
+                        </Select>
+                     </Form.Item>
+                     <Button
+                        type="link"
+                        onClick={() => setCategoryModalOpen(true)}
+                     >
+                        Create a new category
+                     </Button>
+                  </Flex>
+                  <Flex justify="space-between" gap="middle">
+                     <Form.Item
+                        name="name"
+                        label="Channel Name"
+                        className="w-full"
+                        rules={[
+                           {
+                              required: true,
+                              message: 'Please enter channel name',
+                           },
+                        ]}
+                     >
+                        <Input />
+                     </Form.Item>
+
+                     <Form.Item
+                        name="type"
+                        label="Select Channel Type"
+                        className="w-full"
+                        rules={[
+                           {
+                              required: true,
+                              message: 'Please select a category',
+                           },
+                        ]}
+                     >
+                        <Select defaultValue="text">
+                           <Option value="text">Text Channel</Option>
+                           <Option value="voice">Voice Channel</Option>
+                        </Select>
+                     </Form.Item>
+                  </Flex>
+
                   <Form.Item
-                     name="name"
-                     label="Channel Name"
-                     className="w-full"
+                     name="icon"
+                     label="Channel Icon"
+                     required
                      rules={[
                         {
                            required: true,
-                           message: 'Please enter channel name',
+                           message: 'Please select an icon',
                         },
                      ]}
                   >
-                     <Input />
+                     <Flex justify="space-between" gap="middle">
+                        <Flex
+                           className="flex-wrap"
+                           gap="middle"
+                           justify="center"
+                           align="center"
+                        >
+                           {Object.keys(iconMap).map((icon) => (
+                              <Button
+                                 key={icon}
+                                 type="default"
+                                 className="p-2 cursor-pointer"
+                                 onClick={() => {
+                                    form.setFieldsValue({ icon })
+                                    setSelectedIcon(icon)
+                                 }}
+                              >
+                                 <Tooltip title={icon}>{iconMap[icon]}</Tooltip>
+                              </Button>
+                           ))}
+                        </Flex>
+                        <Flex
+                           justify="center"
+                           align="center"
+                           className="w-[20%] border rounded"
+                           vertical
+                           gap="small"
+                        >
+                           <Text className="text-4xl">
+                              {iconMap[selectedIcon]}
+                           </Text>
+                           <Text>{selectedIcon}</Text>
+                        </Flex>
+                     </Flex>
+                  </Form.Item>
+
+                  <Form.Item name="description" label="Channel Description">
+                     <Input.TextArea rows={1} autoSize />
                   </Form.Item>
 
                   <Form.Item
-                     name="type"
-                     label="Select Channel Type"
-                     className="w-full"
-                     rules={[
-                        { required: true, message: 'Please select a category' },
-                     ]}
+                     valuePropName="checked"
+                     className="w-full "
+                     name="isPrivate"
+                     label="Private Channel"
                   >
-                     <Select defaultValue="text">
-                        <Option value="text">Text Channel</Option>
-                        <Option value="voice">Voice Channel</Option>
-                     </Select>
+                     <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                     />
                   </Form.Item>
-               </Flex>
 
-               <Form.Item
-                  name="icon"
-                  label="Channel Icon"
-                  required
-                  rules={[
-                     {
-                        required: true,
-                        message: 'Please select an icon',
-                     },
+                  <Form.Item>
+                     <Flex justify="end">
+                        <Button type="primary" htmlType="submit">
+                           Create Channel
+                        </Button>
+                     </Flex>
+                  </Form.Item>
+               </Form>
+            ) : (
+               <Result
+                  status="success"
+                  title="Successfully Created"
+                  subTitle="Channel Created Successfully"
+                  extra={[
+                     <Button type="primary" key="console" onClick={closeModal}>
+                        Close
+                     </Button>,
                   ]}
-               >
-                  <Flex justify="space-between" gap="middle">
-                     <Flex
-                        className="flex-wrap"
-                        gap="middle"
-                        justify="center"
-                        align="center"
-                     >
-                        {Object.keys(iconMap).map((icon) => (
-                           <Button
-                              key={icon}
-                              type="default"
-                              className="p-2 cursor-pointer"
-                              onClick={() => {
-                                 form.setFieldsValue({ icon })
-                                 setSelectedIcon(icon)
-                              }}
-                           >
-                              <Tooltip title={icon}>{iconMap[icon]}</Tooltip>
-                           </Button>
-                        ))}
-                     </Flex>
-                     <Flex
-                        justify="center"
-                        align="center"
-                        className="w-[20%] border rounded"
-                        vertical
-                        gap="small"
-                     >
-                        <Text className="text-4xl">
-                           {iconMap[selectedIcon]}
-                        </Text>
-                        <Text>{selectedIcon}</Text>
-                     </Flex>
-                  </Flex>
-               </Form.Item>
-
-               <Form.Item name="description" label="Channel Description">
-                  <Input.TextArea rows={1} autoSize />
-               </Form.Item>
-
-               <Form.Item
-                  valuePropName="checked"
-                  className="w-full "
-                  name="isPrivate"
-                  label="Private Channel"
-               >
-                  <Switch
-                     checkedChildren={<CheckOutlined />}
-                     unCheckedChildren={<CloseOutlined />}
-                  />
-               </Form.Item>
-
-               <Form.Item>
-                  <Flex justify="end">
-                     <Button type="primary" htmlType="submit">
-                        Create Channel
-                     </Button>
-                  </Flex>
-               </Form.Item>
-            </Form>
+               />
+            )}
          </Modal>
          <Modal
             title="Create a new category"
@@ -280,7 +318,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
                </Form.Item>
             </Form>
          </Modal>
-         <Toaster />
+         {contextHolder}
       </>
    )
 }

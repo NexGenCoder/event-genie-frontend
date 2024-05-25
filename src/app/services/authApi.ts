@@ -30,6 +30,18 @@ type ISendOtpResponse = {
    }
 }
 
+export type IUser = {
+   userid: string
+   username?: string
+   firstname: string
+   lastname: string
+}
+
+type IGetUsersResponse = {
+   message: string
+   users: IUser[]
+}
+
 type ICheckusernameResponse = {
    exists: boolean
 }
@@ -77,6 +89,10 @@ export const authApi = api.injectEndpoints({
          }),
          providesTags: ['CheckUsername'],
       }),
+      getUsers: builder.query<IGetUsersResponse, void>({
+         query: () => '/users',
+         providesTags: ['Users'],
+      }),
    }),
 })
 export const {
@@ -86,4 +102,5 @@ export const {
    useAddUserDetailsMutation,
    useGetSelfQuery,
    useCheckusernameQuery,
+   useGetUsersQuery,
 } = authApi
