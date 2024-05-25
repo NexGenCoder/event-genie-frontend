@@ -55,7 +55,7 @@ function LoginForm() {
    const handleSendOtp = async () => {
       const requestBody = {
          mobile: formData.mobile,
-         countryCode: '91',
+         country_code: '91',
       }
       try {
          const response = await sendOtp(requestBody).unwrap()
