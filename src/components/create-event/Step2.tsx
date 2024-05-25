@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
 import { Button, DatePicker, Flex, Form, Input, Upload } from 'antd'
-import ImageUpload from '../profile/image-upload'
-import { imageUpload } from '@/utils/uploadImage'
-import { ICreateEventBody } from '@/types/event'
+import React, { useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
+
 import {
    useCreateEventMutation,
    useGetUserEventsQuery,
 } from '@/app/services/eventsApi'
-import toast, { Toaster } from 'react-hot-toast'
+import { ICreateEventBody } from '@/types/event'
+import { imageUpload } from '@/utils/uploadImage'
+
+import ImageUpload from '../profile/image-upload'
 
 interface Step2Props {
    prevStep: () => void

@@ -1,9 +1,10 @@
 'use client'
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 import { Card, Layout, Typography } from 'antd'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 const { Text, Title } = Typography
 

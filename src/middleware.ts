@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+
 import { API } from './constants'
 
+import type { NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
    try {
       const token = request.cookies.get('OG-AUTH')

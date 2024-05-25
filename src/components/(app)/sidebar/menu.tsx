@@ -1,26 +1,31 @@
 'use client'
-import { Flex, Layout, Tooltip, theme, Typography, Avatar } from 'antd'
+import { Avatar, Flex, Layout, theme, Tooltip, Typography } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { FaHome } from 'react-icons/fa'
-import { PiChatsFill } from 'react-icons/pi'
-import EventSwitch from './dropdowns/event-switch'
-import CreateDropdown from './dropdowns/create-dropdown'
 import { MdOutlineEventSeat } from 'react-icons/md'
-import Link from 'next/link'
+import { PiChatsFill } from 'react-icons/pi'
+
+import { useGetUserEventsQuery } from '@/app/services/eventsApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+
+import CreateDropdown from './dropdowns/create-dropdown'
+import EventSwitch from './dropdowns/event-switch'
+
 const { Text } = Typography
 
 interface MenusProps {
-   userid: string
+   eventid: string
 }
 
-const Menus = ({ userid }: MenusProps) => {
+const Menus = ({ eventid }: MenusProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
 
    const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
+   const { data: userEvents } = useGetUserEventsQuery()
 
    return (
       <Layout
@@ -34,25 +39,25 @@ const Menus = ({ userid }: MenusProps) => {
                className="h-full w-full"
                align="center"
             >
-               <EventSwitch />
+               {userEvents && <EventSwitch userEvents={userEvents.data} />}
 
-               <Link href={`/app/${userid}`}>
+               <Link href={`/app/${eventid}`}>
                   <FaHome size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">Home</Text>
                </Link>
 
-               <Link href={`/app/${userid}/dms`}>
+               <Link href={`/app/${eventid}/dms`}>
                   <PiChatsFill size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">DMs</Text>
                </Link>
-               <Link href={`/app/${userid}/events`}>
+               <Link href={`/app/${eventid}/events`}>
                   <MdOutlineEventSeat size={30} color={colorTextBase} />
                   <Text className="text-xs text-center">Events</Text>
                </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">
                <CreateDropdown />
-               <Link href={`/app/${userid}/profile`}>
+               <Link href={`/app/${eventid}/profile`}>
                   <Tooltip
                      title={
                         userData?.firstname + ' ' + userData?.lastname || 'User'

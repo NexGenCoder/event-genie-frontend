@@ -1,10 +1,10 @@
 'use client'
+import { Layout, Steps } from 'antd'
 import React, { useState } from 'react'
+
 import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
-import { Layout } from 'antd'
-import { Steps } from 'antd'
 
 const EventCreation: React.FC = () => {
    const [currentStep, setCurrentStep] = useState(0)

@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
 import { Button, Flex, Layout, Menu, theme } from 'antd'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md'
 
 const sampleChannels = [
@@ -45,10 +45,10 @@ const sampleChannels = [
 ]
 
 interface EventSidebarProps {
-   userid: string
+   eventid: string
 }
 
-const EventSidebar = ({ userid }: EventSidebarProps) => {
+const EventSidebar = ({ eventid }: EventSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
@@ -80,7 +80,9 @@ const EventSidebar = ({ userid }: EventSidebarProps) => {
             items={sampleChannels.map((channel) => ({
                key: channel.eventid,
                label: (
-                  <Link href={`/app/${userid}/events?event=${channel.eventid}`}>
+                  <Link
+                     href={`/app/${eventid}/events?event=${channel.eventid}`}
+                  >
                      {channel.eventName}
                   </Link>
                ),

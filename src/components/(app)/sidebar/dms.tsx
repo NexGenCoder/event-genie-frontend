@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
 import { Layout, Menu, theme } from 'antd'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 const sampleChannels = [
    {
@@ -26,10 +26,10 @@ const sampleChannels = [
 ]
 
 interface DMSidebarProps {
-   userid: string
+   eventid: string
 }
 
-const DMSidebar = ({ userid }: DMSidebarProps) => {
+const DMSidebar = ({ eventid }: DMSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
@@ -52,7 +52,7 @@ const DMSidebar = ({ userid }: DMSidebarProps) => {
             items={sampleChannels.map((channel) => ({
                key: channel.userid,
                label: (
-                  <Link href={`/app/${userid}/dms?dms=${channel.userid}`}>
+                  <Link href={`/app/${eventid}/dms?dms=${channel.userid}`}>
                      {channel.name}
                   </Link>
                ),

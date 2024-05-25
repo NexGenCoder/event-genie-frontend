@@ -1,9 +1,11 @@
 'use client'
+import { Typography } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
-import ProfileForm from './profile-form'
-import { Typography } from 'antd'
+
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+
+import ProfileForm from './profile-form'
 
 const { Title } = Typography
 

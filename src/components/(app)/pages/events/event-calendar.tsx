@@ -1,9 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
-import CalendarToolbar from './calendar-toolbar'
 import { Layout, theme } from 'antd'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
+
+import CalendarToolbar from './calendar-toolbar'
 
 function EventCalendar() {
    const {

@@ -1,21 +1,19 @@
 'use client'
-import React from 'react'
-import { CgProfile } from 'react-icons/cg'
-import { MdEvent } from 'react-icons/md'
-import { FaCalendarAlt } from 'react-icons/fa'
-import { FaUserEdit } from 'react-icons/fa'
-import { TiUserDelete } from 'react-icons/ti'
-import { RiBrush2Fill } from 'react-icons/ri'
-import { MdLanguage } from 'react-icons/md'
-import { IoEarth } from 'react-icons/io5'
 import { Layout, Menu, theme } from 'antd'
 import Link from 'next/link'
+import React from 'react'
+import { CgProfile } from 'react-icons/cg'
+import { FaCalendarAlt, FaUserEdit } from 'react-icons/fa'
+import { IoEarth } from 'react-icons/io5'
+import { MdEvent, MdLanguage } from 'react-icons/md'
+import { RiBrush2Fill } from 'react-icons/ri'
+import { TiUserDelete } from 'react-icons/ti'
 
 interface ProfileSidebarProps {
-   userid: string
+   eventid: string
 }
 
-const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
+const ProfileSidebar = ({ eventid }: ProfileSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
@@ -41,7 +39,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         key: 'view-profile',
                         icon: <CgProfile />,
                         label: (
-                           <Link href={`/app/${userid}/profile`}>
+                           <Link href={`/app/${eventid}/profile`}>
                               View Profile
                            </Link>
                         ),
@@ -51,7 +49,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         icon: <FaUserEdit />,
                         label: (
                            <Link
-                              href={`/app/${userid}/profile?tab=edit-profile`}
+                              href={`/app/${eventid}/profile?tab=edit-profile`}
                            >
                               Edit Profile
                            </Link>
@@ -68,7 +66,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         key: 'view-events',
                         icon: <FaCalendarAlt />,
                         label: (
-                           <Link href={`/app/${userid}/profile?tab=events`}>
+                           <Link href={`/app/${eventid}/profile?tab=events`}>
                               View Events
                            </Link>
                         ),
@@ -78,7 +76,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         icon: <MdEvent />,
                         label: (
                            <Link
-                              href={`/app/${userid}/profile?tab=create-event`}
+                              href={`/app/${eventid}/profile?tab=create-event`}
                            >
                               Create Event
                            </Link>
@@ -95,7 +93,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         key: 'change-theme',
                         icon: <RiBrush2Fill />,
                         label: (
-                           <Link href={`/app/${userid}/profile?tab=theme`}>
+                           <Link href={`/app/${eventid}/profile?tab=theme`}>
                               Theme
                            </Link>
                         ),
@@ -111,7 +109,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         key: 'change-language',
                         icon: <MdLanguage />,
                         label: (
-                           <Link href={`/app/${userid}/profile?tab=language`}>
+                           <Link href={`/app/${eventid}/profile?tab=language`}>
                               Language
                            </Link>
                         ),
@@ -120,7 +118,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         key: 'change-country',
                         icon: <IoEarth />,
                         label: (
-                           <Link href={`/app/${userid}/profile?tab=country`}>
+                           <Link href={`/app/${eventid}/profile?tab=country`}>
                               Country
                            </Link>
                         ),
@@ -137,7 +135,7 @@ const ProfileSidebar = ({ userid }: ProfileSidebarProps) => {
                         icon: <TiUserDelete />,
                         label: (
                            <Link
-                              href={`/app/${userid}/profile?tab=delete-account`}
+                              href={`/app/${eventid}/profile?tab=delete-account`}
                            >
                               Delete Account
                            </Link>

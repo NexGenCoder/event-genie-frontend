@@ -1,8 +1,9 @@
-import { Button, Flex, Tooltip, theme, Input, Image } from 'antd'
-import React, { useState, useRef } from 'react'
+import { Button, Flex, Image, Input, theme, Tooltip } from 'antd'
+import React, { useRef, useState } from 'react'
 import { GrAttachment } from 'react-icons/gr'
 import { IoSend } from 'react-icons/io5'
 import { MdDelete } from 'react-icons/md'
+
 const { TextArea } = Input
 
 interface SendMessageProps {

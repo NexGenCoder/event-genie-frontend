@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Button, Flex, Modal, Tooltip, theme, Typography, Dropdown } from 'antd'
-import { MdAddCircle } from 'react-icons/md'
-import { MdPersonAdd } from 'react-icons/md'
+import { Button, Dropdown, Flex, theme, Tooltip, Typography } from 'antd'
+import React from 'react'
 import { BiSolidMessageSquareAdd } from 'react-icons/bi'
+import { MdAddCircle, MdPersonAdd } from 'react-icons/md'
+
 const { Text } = Typography
 
 const CreateDropdown = () => {

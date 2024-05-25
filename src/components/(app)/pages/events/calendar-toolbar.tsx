@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useMemo } from 'react'
 import { Views } from 'react-big-calendar'
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md'
+
 const { Text } = Typography
 
 const VIEW_OPTIONS = [

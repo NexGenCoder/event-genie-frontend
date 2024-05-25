@@ -1,8 +1,9 @@
 import { api } from '@/app/services/api'
+import { IChannelLIst } from '@/types/channel'
 import {
-   IEventTypeResponse,
    ICreateEventBody,
    ICreateEventResponse,
+   IEventTypeResponse,
    IUserEventsList,
 } from '@/types/event'
 
@@ -24,6 +25,10 @@ export const eventsApi = api.injectEndpoints({
          query: () => '/events',
          providesTags: ['UserEvents'],
       }),
+      getEventCategories: builder.query<IChannelLIst, string>({
+         query: (eventid) => `/event/categories/${eventid}`,
+         providesTags: ['EventChannels'],
+      }),
    }),
 })
 
@@ -31,4 +36,5 @@ export const {
    useGetEventTypesQuery,
    useCreateEventMutation,
    useGetUserEventsQuery,
+   useGetEventCategoriesQuery,
 } = eventsApi

@@ -1,4 +1,4 @@
-import { Flex, Image, Layout, Typography, theme } from 'antd'
+import { Flex, Image, Layout, theme, Typography } from 'antd'
 import React from 'react'
 
 const { Text } = Typography

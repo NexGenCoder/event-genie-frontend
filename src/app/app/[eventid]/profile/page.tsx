@@ -1,13 +1,15 @@
-import UserAccount from '@/components/(app)/pages/account'
-import UserHome from '@/components/(app)/pages/home'
-import HomeSidebar from '@/components/(app)/sidebar/home'
-import Menus from '@/components/(app)/sidebar/menu'
-import { Flex, Layout } from 'antd'
+import { Flex, Layout, Typography } from 'antd'
 import React from 'react'
+
+import UserAccount from '@/components/(app)/pages/account'
+import Menus from '@/components/(app)/sidebar/menu'
+import ProfileSidebar from '@/components/(app)/sidebar/profile'
+
+const { Title } = Typography
 
 interface UserHomePageProps {
    params: {
-      userid: string
+      eventid: string
    }
 }
 
@@ -16,10 +18,10 @@ function UserHomePage({ params }: UserHomePageProps) {
       <Layout className="h-screen">
          <Flex className="h-full w-full">
             <Flex className="flex w-[300px] h-full ">
-               <Menus userid={params.userid} />
-               <HomeSidebar userid={params.userid} />
+               <Menus eventid={params.eventid} />
+               <ProfileSidebar eventid={params.eventid} />
             </Flex>
-            <UserHome />
+            <UserAccount />
          </Flex>
       </Layout>
    )

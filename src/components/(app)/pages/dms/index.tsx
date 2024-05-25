@@ -1,7 +1,8 @@
 'use client'
+import { Typography } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
-import { Typography } from 'antd'
+
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 const { Title } = Typography

@@ -1,15 +1,15 @@
 'use client'
 import '../globals.css'
 
-import { ConfigProvider, FloatButton, Tooltip, theme } from 'antd'
+import { ConfigProvider, FloatButton, theme, Tooltip } from 'antd'
 import { Inter } from 'next/font/google'
 import { useState } from 'react'
+import { CiLight } from 'react-icons/ci'
+import { MdDarkMode } from 'react-icons/md'
 import { Provider } from 'react-redux'
 
 import { store } from '@/app/store'
 import Navbar from '@/components/navbar'
-import { CiLight } from 'react-icons/ci'
-import { MdDarkMode } from 'react-icons/md'
 
 const inter = Inter({ subsets: ['latin'] })
 

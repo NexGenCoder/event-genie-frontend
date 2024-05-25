@@ -1,11 +1,13 @@
 'use client'
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import { Flex, Layout } from 'antd'
 import { useSearchParams } from 'next/navigation'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import { Message, SendMessageBody } from '@/types/message'
+
 import ChatMessage from './chat-message'
 import SendMessage from './send-message'
-import { Flex, Layout } from 'antd'
-import { Message, SendMessageBody } from '@/types/message'
 
 function UserHome() {
    const [searchParams] = useSearchParams()

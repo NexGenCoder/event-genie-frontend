@@ -1,9 +1,11 @@
 'use client'
-import React from 'react'
-import UserEvents from './user-events'
-import CreateButtons from './create-buttons'
-import { useGetUserEventsQuery } from '@/app/services/eventsApi'
 import { Layout } from 'antd'
+import React from 'react'
+
+import { useGetUserEventsQuery } from '@/app/services/eventsApi'
+
+import CreateButtons from './create-buttons'
+import UserEvents from './user-events'
 
 function HomePageHero() {
    const { data: userEvents } = useGetUserEventsQuery()

@@ -18,6 +18,7 @@ export const api = createApi({
       'EventTypes',
       'CreateEvent',
       'UserEvents',
+      'EventChannels',
    ],
    endpoints: () => ({}),
 })

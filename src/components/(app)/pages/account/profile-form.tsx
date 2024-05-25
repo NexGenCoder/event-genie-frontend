@@ -9,14 +9,14 @@ import { MdAlternateEmail, MdDoneAll } from 'react-icons/md'
 
 import {
    useAddUserDetailsMutation,
-   useGetSelfQuery,
    useCheckusernameQuery,
+   useGetSelfQuery,
 } from '@/app/services/authApi'
+import ImageUpload from '@/components/profile/image-upload'
+import { useDebounce } from '@/hooks/useDebounce'
+import { IUser } from '@/types/user'
 import { imageUpload } from '@/utils/uploadImage'
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
-import { useDebounce } from '@/hooks/useDebounce'
-import ImageUpload from '@/components/profile/image-upload'
-import { IUser } from '@/types/user'
 
 interface AddUserDetailsFormProps {
    userData: IUser

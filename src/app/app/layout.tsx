@@ -1,10 +1,11 @@
 'use client'
-import './../globals.css'
+import '../globals.css'
 
 import { ConfigProvider, theme } from 'antd'
 import { Inter } from 'next/font/google'
 import { useState } from 'react'
 import { Provider } from 'react-redux'
+
 import { store } from '@/app/store'
 
 const inter = Inter({ subsets: ['latin'] })

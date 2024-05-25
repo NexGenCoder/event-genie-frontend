@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Layout, Typography, Input, Spin, Result, Button } from 'antd'
+import { Button, Card, Input, Layout, Result, Spin, Typography } from 'antd'
 import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
+
 import { useGetEventTypesQuery } from '@/app/services/eventsApi'
 import { IEventType } from '@/types/event'
 
