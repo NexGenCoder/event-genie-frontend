@@ -1,4 +1,4 @@
-import EventCreation from '@/components/create-event/EventCreation'
+import EventCreation from '@/components/create-event'
 import { Layout } from 'antd'
 import React from 'react'
 

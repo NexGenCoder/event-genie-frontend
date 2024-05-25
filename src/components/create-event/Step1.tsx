@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Layout, Typography, Input, Spin, Result, Button } from 'antd'
 import Image from 'next/image'
 import { useGetEventTypesQuery } from '@/app/services/eventsApi'
-import { IEventType } from '@/types/eventTypes'
+import { IEventType } from '@/types/event'
 
 const { Search } = Input
 const { Text, Title } = Typography
@@ -34,8 +34,8 @@ const Step1 = ({ nextStep, handleEventDataChange }: Step1Props) => {
       }
    }
 
-   const selectEventType = (type: string) => {
-      handleEventDataChange({ eventType: type })
+   const selectEventType = (type: string, logo: string) => {
+      handleEventDataChange({ eventType: type, eventLogo: logo })
       nextStep()
    }
 
@@ -79,7 +79,9 @@ const Step1 = ({ nextStep, handleEventDataChange }: Step1Props) => {
                            className="w-[150px] h-[150px] p-8"
                         />
                      }
-                     onClick={() => selectEventType(event.name)}
+                     onClick={() =>
+                        selectEventType(event.name, event.image_url)
+                     }
                      className="cursor-pointer hover:shadow-xl transition duration-300 ease-in-out"
                   >
                      <Card.Meta

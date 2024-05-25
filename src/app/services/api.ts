@@ -16,6 +16,8 @@ export const api = createApi({
       'Self',
       'CheckUsername',
       'EventTypes',
+      'CreateEvent',
+      'UserEvents',
    ],
    endpoints: () => ({}),
 })

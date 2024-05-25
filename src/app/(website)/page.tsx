@@ -1,10 +1,10 @@
-import HomeButton from '@/components/home/action-buttons'
+import HomePageHero from '@/components/home'
 import { Layout } from 'antd'
 
 export default function Home() {
    return (
-      <Layout className="flex min-h-screen flex-col items-center justify-between p-24">
-         <HomeButton />
+      <Layout className="flex w-full min-h-screen  flex-col items-center justify-between md:px-16 p-4">
+         <HomePageHero />
       </Layout>
    )
 }

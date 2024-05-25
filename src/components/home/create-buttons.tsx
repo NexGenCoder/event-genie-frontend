@@ -28,7 +28,7 @@ const homeButtons = [
    },
 ]
 
-function HomeButton() {
+function CreateButtons() {
    const router = useRouter()
    const { isLoggedin, isLoading } = useIsAuthenticated()
 
@@ -37,7 +37,7 @@ function HomeButton() {
 
    return (
       <Layout className="w-full flex flex-col gap-4 items-center justify-center md:w-[80%] ">
-         <Title level={2} className="text-center">
+         <Title level={3} className="text-center">
             What would you like to do?
          </Title>
          <Text className="text-center">
@@ -73,4 +73,4 @@ function HomeButton() {
    )
 }
 
-export default HomeButton
+export default CreateButtons
