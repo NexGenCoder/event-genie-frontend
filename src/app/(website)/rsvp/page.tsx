@@ -1,5 +1,6 @@
-import UserRsvp from '@/components/rsvp'
 import { Layout } from 'antd'
+
+import UserRsvp from '@/components/(website)/pages/rsvp'
 
 export default function RsvpPage() {
    return (

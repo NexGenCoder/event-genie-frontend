@@ -12,7 +12,7 @@ const { Text, Title } = Typography
 interface UserEventsProps {
    events: IEvent[]
 }
-function UserEvents({ events }: UserEventsProps) {
+function UserEventsList({ events }: UserEventsProps) {
    const router = useRouter()
    const { isLoggedin, isLoading } = useIsAuthenticated()
 
@@ -24,9 +24,7 @@ function UserEvents({ events }: UserEventsProps) {
          <Title level={3} className="text-center">
             Your Events
          </Title>
-         <Text className="text-center">
-            Events you are hosting or attending
-         </Text>
+         <Text className="text-center">Events you are hosting</Text>
          <div className="w-full flex gap-4 flex-wrap justify-center">
             {events.map((event) => (
                <Card
@@ -57,4 +55,4 @@ function UserEvents({ events }: UserEventsProps) {
    )
 }
 
-export default UserEvents
+export default UserEventsList

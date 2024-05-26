@@ -1,6 +1,6 @@
 import { Layout } from 'antd'
 
-import HomePageHero from '@/components/home'
+import HomePageHero from '@/components/(website)/pages/home'
 
 export default function Home() {
    return (

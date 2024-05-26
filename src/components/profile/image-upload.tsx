@@ -53,9 +53,9 @@ const ImageUpload = ({ setImage, defaultImage }: ImageUploadProps) => {
       <div className="flex flex-col ">
          <Upload
             name="avatar"
-            listType="picture-circle"
+            listType="picture-card"
             showUploadList={false}
-            className="bg-white rounded-full flex justify-center items-center md:w-[120px] w-[100px] md:h-[120px] h-[100px] "
+            className="bg-white rounded-2xl flex justify-center items-center md:w-[120px] w-[100px] md:h-[120px] h-[100px] "
             onChange={handleChange}
          >
             {imageUrl ? (
@@ -65,7 +65,7 @@ const ImageUpload = ({ setImage, defaultImage }: ImageUploadProps) => {
                   src={imageUrl}
                   quality={100}
                   alt="avatar"
-                  className="rounded-full md:w-[120px] w-[100px] md:h-[120px] h-[100px] object-cover border-2 border-gray-500 shadow-lg"
+                  className="rounded-2xl md:w-[120px] w-[100px] md:h-[120px] h-[100px] object-cover border-2 border-gray-500 shadow-lg p-2"
                />
             ) : (
                uploadButton

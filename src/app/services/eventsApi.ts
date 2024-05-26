@@ -1,8 +1,6 @@
 import { api } from '@/app/services/api'
 import {
    ICategories,
-   IChannel,
-   IChannelCategoryList,
    IChannelDetails,
    IChannelLIst,
    ICreateChannel,

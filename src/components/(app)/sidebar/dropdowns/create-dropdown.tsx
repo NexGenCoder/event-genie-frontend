@@ -3,12 +3,12 @@ import React from 'react'
 import { BiSolidMessageSquareAdd } from 'react-icons/bi'
 import { MdAddCircle, MdPersonAdd } from 'react-icons/md'
 
+import { useGetUsersQuery } from '@/app/services/authApi'
 import { useGetEventCategoriesQuery } from '@/app/services/eventsApi'
 import { IEvent } from '@/types/event'
 
 import CreateChannelModal from '../modals/create-channel'
 import CreateRsvpModal from '../modals/invite-people'
-import { useGetUsersQuery } from '@/app/services/authApi'
 
 const { Text } = Typography
 

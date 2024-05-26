@@ -1,7 +1,7 @@
 import { Layout } from 'antd'
 import React from 'react'
 
-import EventCreation from '@/components/create-event'
+import EventCreation from '@/components/(website)/pages/create-event'
 
 function EventCreatePage() {
    return (

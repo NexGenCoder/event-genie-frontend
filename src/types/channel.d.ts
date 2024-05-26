@@ -1,4 +1,5 @@
 import { IChannel } from '@/types/channel'
+
 export type IChannelCategory = {
    categoryid: string
    eventid: string

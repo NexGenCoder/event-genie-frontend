@@ -1,6 +1,6 @@
 export type IRsvp = {
    rsvpid: string
-   userid: string
+   userid?: string
    eventid: string
    status: 'accepted' | 'declined' | 'pending'
    expiry_at: Date

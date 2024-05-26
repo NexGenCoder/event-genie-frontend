@@ -40,13 +40,22 @@ const Step1 = ({ nextStep, handleEventDataChange }: Step1Props) => {
       nextStep()
    }
 
-   if (isLoading) {
+   const contentStyle: React.CSSProperties = {
+      padding: 50,
+      background: 'rgba(0, 0, 0, 0.05)',
+      borderRadius: 4,
+   }
+
+   const content = <div style={contentStyle} />
+
+   if (isLoading)
       return (
-         <Layout className="w-full flex flex-col gap-4 items-center p-6">
-            <Spin size="large" />
+         <Layout className="flex items-center justify-center w-full">
+            <Spin size="large" tip="Loading..." className="w-full h-full">
+               {content}
+            </Spin>
          </Layout>
       )
-   }
 
    if (isError) {
       return (

@@ -48,7 +48,7 @@ function Navbar() {
                </Link>
                <Link
                   href="/vendors"
-                  title="Vendors"
+                  title="Explore Vendors and their services"
                   className="flex justify-center items-center  gap-2 py-2 px-5"
                   style={{ color: colorTextBase }}
                >
@@ -56,6 +56,7 @@ function Navbar() {
                </Link>
                <Link
                   href="/events"
+                  title="Your Events"
                   className="flex justify-center items-center  gap-2 py-2 px-5"
                   style={{ color: colorTextBase }}
                >
@@ -63,6 +64,7 @@ function Navbar() {
                </Link>
                <Link
                   href="/rsvp"
+                  title="Your invitations"
                   className="flex justify-center items-center  gap-2 py-2 px-5"
                   style={{ color: colorTextBase }}
                >

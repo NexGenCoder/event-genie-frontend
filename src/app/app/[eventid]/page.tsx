@@ -1,12 +1,12 @@
 'use client'
 import { Flex, Layout, Result } from 'antd'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 import { useGetEventChannelsQuery } from '@/app/services/eventsApi'
 import UserHome from '@/components/(app)/pages/home'
 import HomeSidebar from '@/components/(app)/sidebar/home'
 import Menus from '@/components/(app)/sidebar/menu'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 interface UserHomePageProps {
