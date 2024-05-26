@@ -28,6 +28,10 @@ export const api = createApi({
       'CreateOpenRsvp',
       'UpdateDirectRsvp',
       'UpdateOpenRsvp',
+      'SendMessages',
+      'GetMessages',
+      'ChannelDetails',
+      'GetUserRsvp',
    ],
    endpoints: () => ({}),
 })

@@ -1,7 +1,9 @@
 import { api } from '@/app/services/api'
 import {
    ICategories,
+   IChannel,
    IChannelCategoryList,
+   IChannelDetails,
    IChannelLIst,
    ICreateChannel,
    ICreateChannelCategory,
@@ -60,6 +62,10 @@ export const eventsApi = api.injectEndpoints({
          }),
          invalidatesTags: ['EventCategories'],
       }),
+      getChannelDetails: builder.query<IChannelDetails, string>({
+         query: (channelId) => `/channel/${channelId}`,
+         providesTags: ['ChannelDetails'],
+      }),
    }),
 })
 
@@ -72,4 +78,5 @@ export const {
    useGetEventDetailsQuery,
    useCreateEventChannelMutation,
    useCreateEventCategoryMutation,
+   useGetChannelDetailsQuery,
 } = eventsApi

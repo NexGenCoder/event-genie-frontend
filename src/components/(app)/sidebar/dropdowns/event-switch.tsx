@@ -13,22 +13,6 @@ interface EventSwitchProps {
    eventDetails: IEvent
 }
 
-const data = {
-   eventid: 'c26b615f-542c-45e6-8810-1a0cb1864dee',
-   parent_eventid: null,
-   event_name: 'Deepak Birthday',
-   start_date_time: '2024-05-29T18:30:00.000Z',
-   end_date_time: '2024-05-30T18:30:00.000Z',
-   description: 'Deepak Birthday Party',
-   event_logo:
-      'https://res.cloudinary.com/dspyieeio/image/upload/v1716530846/birthday-cake-svgrepo-com_r0qxre.svg',
-   location: 'Patna Bihar',
-   event_type: 'Birthday',
-   created_at: '2024-05-25T04:54:13.112Z',
-   updated_at: '2024-05-25T04:54:13.112Z',
-   userid: '1a0d90a5-9b34-4d80-a9b2-f9cf1256ff6e',
-}
-
 const EventSwitch = ({ userEvents, eventDetails }: EventSwitchProps) => {
    const router = useRouter()
    const {

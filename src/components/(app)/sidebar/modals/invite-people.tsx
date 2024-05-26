@@ -57,21 +57,21 @@ const CreateRsvpModal = ({
                }
                try {
                   await createDirectRsvp(requestBody).unwrap()
-               } catch (error) {
-                  messageApi.error("Couldn't create RSVP")
+                  messageApi
+                     .open({
+                        type: 'loading',
+                        content: `Inviting people...`,
+                        duration: 2.5,
+                     })
+                     .then(() => {
+                        messageApi.success(
+                           `Invited for ${eventDetails.event_name} successfully`,
+                        )
+                        setShowResult(true)
+                     })
+               } catch (error: any) {
+                  messageApi.error(error.data.message)
                }
-            })
-         messageApi
-            .open({
-               type: 'loading',
-               content: `Inviting people...`,
-               duration: 2.5,
-            })
-            .then(() => {
-               messageApi.success(
-                  `Invited for ${eventDetails.event_name} successfully`,
-               )
-               setShowResult(true)
             })
       } else {
          const requestBody: ICreatersvp = {
@@ -92,8 +92,8 @@ const CreateRsvpModal = ({
                   setRsvpId(response.data.rsvpid)
                   setShowResult(true)
                })
-         } catch (error) {
-            messageApi.error("Couldn't create RSVP")
+         } catch (error: any) {
+            messageApi.error(error.data.message)
          }
       }
    }

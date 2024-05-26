@@ -7,7 +7,7 @@ export const imageUpload = async (image: File, folderName: string) => {
 
    try {
       const res = await fetch(
-         'https://api.cloudinary.com/v1_1/dspyieeio/image/upload',
+         'https://api.cloudinary.com/v1_1/dspyieeio/auto/upload',
          {
             method: 'POST',
             body: bodyData,
