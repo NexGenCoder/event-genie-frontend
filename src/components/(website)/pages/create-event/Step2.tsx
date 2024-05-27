@@ -1,4 +1,4 @@
-import { Button, DatePicker, Flex, Form, Input, message } from 'antd'
+import { Button, DatePicker, Flex, Form, Input, message, Switch } from 'antd'
 import React, { useState } from 'react'
 
 import {
@@ -73,15 +73,25 @@ const Step2 = ({
          >
             <ImageUpload setImage={setImage} defaultImage={defaultEventImage} />
          </Form.Item>
-         <Form.Item
-            name="eventName"
-            label="Event Name"
-            rules={[
-               { required: true, message: 'Please input the event name!' },
-            ]}
-         >
-            <Input />
-         </Form.Item>
+         <Flex gap="middle" className="w-full">
+            <Form.Item
+               name="eventName"
+               label="Event Name"
+               className="w-full"
+               rules={[
+                  { required: true, message: 'Please input the event name!' },
+               ]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               name="isPrivate"
+               label="Private Event"
+               className="w-full"
+            >
+               <Switch defaultChecked={false} />
+            </Form.Item>
+         </Flex>
          <Flex gap="middle" className="w-full">
             <Form.Item
                name="startDateTime"

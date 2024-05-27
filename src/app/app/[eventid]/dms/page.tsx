@@ -19,7 +19,7 @@ function DMsPage({ params }: DMsPageProps) {
                <Menus eventid={params.eventid} />
                <DMSidebar eventid={params.eventid} />
             </Flex>
-            <UserAccount />
+            <UserAccount eventid={params.eventid} />
          </Flex>
       </Layout>
    )

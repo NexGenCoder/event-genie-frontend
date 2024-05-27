@@ -1,5 +1,5 @@
 import { api } from '@/app/services/api'
-import { IUserResponse } from '@/types/user'
+import { IUpdateUser, IUpdateUserResponse, IUserResponse } from '@/types/user'
 
 type ISendOtp = {
    mobile: string
@@ -9,15 +9,7 @@ type ISendOtp = {
 type IVerifyOtp = {
    mobile: string
    otp: string
-}
-
-type IAddUserDetails = {
-   username: string
-   email: string
-   firstname: string
-   lastname: string
-   profile_picture: string
-   bio: string
+   userid?: string
 }
 
 type ISendOtpResponse = {
@@ -67,7 +59,7 @@ export const authApi = api.injectEndpoints({
          }),
          invalidatesTags: ['VerifyOtp'],
       }),
-      addUserDetails: builder.mutation<void, IAddUserDetails>({
+      updateUserDetails: builder.mutation<IUpdateUserResponse, IUpdateUser>({
          query: (body) => ({
             url: '/auth/add-user-details',
             method: 'POST',
@@ -99,7 +91,7 @@ export const {
    useSendOtpMutation,
    useVerifyOtpMutation,
    useLogoutMutation,
-   useAddUserDetailsMutation,
+   useUpdateUserDetailsMutation,
    useGetSelfQuery,
    useCheckusernameQuery,
    useGetUsersQuery,

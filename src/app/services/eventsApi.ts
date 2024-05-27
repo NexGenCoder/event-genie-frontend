@@ -1,3 +1,5 @@
+import { create } from 'domain'
+
 import { api } from '@/app/services/api'
 import {
    ICategories,
@@ -7,12 +9,25 @@ import {
    ICreateChannelCategory,
 } from '@/types/channel'
 import {
+   ICreateChildEventBody,
    ICreateEventBody,
    ICreateEventResponse,
    IEventDetailsResponse,
    IEventTypeResponse,
    IUserEventsList,
 } from '@/types/event'
+
+export type IUpdateEvent = {
+   eventid: string
+   parent_eventid?: string | null
+   event_name?: string
+   start_date_time?: string
+   end_date_time?: string
+   description?: string
+   event_logo?: string
+   location?: string
+   event_type?: string
+}
 
 export const eventsApi = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -64,6 +79,22 @@ export const eventsApi = api.injectEndpoints({
          query: (channelId) => `/channel/${channelId}`,
          providesTags: ['ChannelDetails'],
       }),
+      updateEvent: builder.mutation<any, IUpdateEvent>({
+         query: (body) => ({
+            url: `/event/${body.eventid}`,
+            method: 'PUT',
+            body,
+         }),
+         invalidatesTags: ['EventDetails', 'UserEvents'],
+      }),
+      createChildEvent: builder.mutation<any, ICreateChildEventBody>({
+         query: (body) => ({
+            url: '/event/child',
+            method: 'POST',
+            body,
+         }),
+         invalidatesTags: ['UserEvents'],
+      }),
    }),
 })
 
@@ -77,4 +108,6 @@ export const {
    useCreateEventChannelMutation,
    useCreateEventCategoryMutation,
    useGetChannelDetailsQuery,
+   useUpdateEventMutation,
+   useCreateChildEventMutation,
 } = eventsApi

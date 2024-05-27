@@ -1,28 +1,31 @@
 'use client'
-import { Typography } from 'antd'
+import { Layout, Typography } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
+import { useGetUserEventsQuery } from '@/app/services/eventsApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
-import ProfileForm from './profile-form'
+import CreateSubEvent from './create-sub-event'
+import EventDetails from './event-details'
+import UserDetails from './user-details'
 
 const { Title } = Typography
+interface UserAccountProps {
+   eventid: string
+}
 
-function UserAccount() {
+function UserAccount({ eventid }: UserAccountProps) {
    const [searchParams] = useSearchParams()
    const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
-
    return (
-      <div className="w-full">
-         {searchParams && searchParams[1] === 'edit-profile' ? (
-            <>{userData && <ProfileForm userData={userData} />}</>
-         ) : searchParams && searchParams[1] === 'profile' ? (
-            <Title>Profile</Title>
+      <Layout className="w-full h-screen overflow-y-auto">
+         {searchParams && searchParams[1] === 'profile' ? (
+            <>{userData && <UserDetails user={userData} />}</>
          ) : searchParams && searchParams[1] === 'events' ? (
-            <Title>Events</Title>
+            <EventDetails eventid={eventid} />
          ) : searchParams && searchParams[1] === 'create-event' ? (
-            <Title>Create Event</Title>
+            <CreateSubEvent parentId={eventid} />
          ) : searchParams && searchParams[1] === 'theme' ? (
             <Title>Theme</Title>
          ) : searchParams && searchParams[1] === 'language' ? (
@@ -32,9 +35,9 @@ function UserAccount() {
          ) : searchParams && searchParams[1] === 'delete-account' ? (
             <Title>Delete Account</Title>
          ) : (
-            <Title>Profile</Title>
+            <>{userData && <UserDetails user={userData} />}</>
          )}
-      </div>
+      </Layout>
    )
 }
 

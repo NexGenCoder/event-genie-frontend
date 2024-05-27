@@ -1,6 +1,8 @@
 import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:3001', {
+import { API } from '@/constants'
+
+const socket = io(API, {
    withCredentials: true,
    extraHeaders: {
       'my-custom-header': 'abcd',

@@ -66,7 +66,7 @@ function UserHome({ userdata, channelId }: UserHomeProps) {
       socket.on('message', handleNewMessage)
 
       return () => {
-         socket.off('message', handleNewMessage) // Clean up listener
+         socket.off('message', handleNewMessage)
       }
    }, [channelId])
 
