@@ -26,7 +26,8 @@ export type IUpdateUser = {
    lastname: string
    profilePicture: string
    username: string
-   mobile: string
+   mobile?: string
+   email?: string
    bio: string
 }
 
