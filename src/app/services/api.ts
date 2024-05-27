@@ -28,6 +28,7 @@ export const api = createApi({
       'CreateOpenRsvp',
       'UpdateDirectRsvp',
       'UpdateOpenRsvp',
+      'CreateVendor',
    ],
    endpoints: () => ({}),
 })

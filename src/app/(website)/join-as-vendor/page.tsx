@@ -1,11 +1,13 @@
 import React from 'react'
+import { Layout } from 'antd'
+import VendorOnboarding from '@/components/join-as-vendor'
 
-const VendorOnboarding = () => {
+const VendorOnboardingPage = () => {
    return (
-      <>
-         <h1>Hello World</h1>
-      </>
+      <Layout className="flex min-h-screen flex-col items-center justify-between p-6 w-full">
+         <VendorOnboarding />
+      </Layout>
    )
 }
 
-export default VendorOnboarding
+export default VendorOnboardingPage
