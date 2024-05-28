@@ -85,7 +85,7 @@ const Menus = ({ eventid }: MenusProps) => {
                </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">
-               {eventDetails && (
+               {eventDetails && eventDetails.data.role === 'host' && (
                   <CreateDropdown eventDetails={eventDetails.data} />
                )}
                <Link href={`/app/${eventid}/profile`}>

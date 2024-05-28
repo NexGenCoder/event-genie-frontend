@@ -30,7 +30,7 @@ export const rsvpApi = api.injectEndpoints({
             method: 'PUT',
             body,
          }),
-         invalidatesTags: ['UpdateDirectRsvp'],
+         invalidatesTags: ['GetUserRsvp'],
       }),
       updateOpenRsvp: builder.mutation<any, IUpdateRsvp>({
          query: (body) => ({

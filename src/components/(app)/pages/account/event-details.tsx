@@ -71,10 +71,14 @@ const EventDetails = ({ eventid }: EventDetailsProps) => {
          title="Event Details"
          style={{ width: '100%' }}
          extra={
-            isEditing ? (
-               <Button onClick={handleCancelClick}>Cancel</Button>
-            ) : (
-               <Button onClick={handleEditClick}>Edit</Button>
+            event.data.role === 'host' && (
+               <>
+                  {isEditing ? (
+                     <Button onClick={handleCancelClick}>Cancel</Button>
+                  ) : (
+                     <Button onClick={handleEditClick}>Edit</Button>
+                  )}
+               </>
             )
          }
       >

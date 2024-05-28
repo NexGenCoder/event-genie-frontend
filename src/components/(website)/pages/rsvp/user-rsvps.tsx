@@ -1,12 +1,15 @@
 'use client'
-import { Button, Card, Layout, Typography } from 'antd'
+import { Button, Card, Layout, Typography, message, Modal } from 'antd'
 import moment from 'moment'
 import Image from 'next/image'
 import React from 'react'
 
-import { useUpdateDirectRsvpMutation } from '@/app/services/rsvpApi'
+import {
+   useUpdateDirectRsvpMutation,
+   useUpdateOpenRsvpMutation,
+} from '@/app/services/rsvpApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
-import { IGetUserRsvp } from '@/types/rsvp'
+import { IGetUserRsvp, IUpdateRsvp } from '@/types/rsvp'
 
 const { Text, Title } = Typography
 
@@ -16,16 +19,87 @@ interface UserRsvpsProps {
 
 function UserRsvps({ rsvps }: UserRsvpsProps) {
    const { isLoggedin, isLoading } = useIsAuthenticated()
+   const [modal, modalContextHolder] = Modal.useModal()
+
+   const confirm = () => {
+      modal.confirm({
+         title: 'Do you want to accept this invitation?',
+         content: 'Click accept to confirm',
+         onOk() {
+            handleAccept(rsvps[0].rsvpid)
+         },
+         onCancel() {
+            console.log('Cancel')
+         },
+      })
+   }
+
+   const cancel = () => {
+      modal.confirm({
+         title: 'Do you want to reject this invitation?',
+         content: 'Click reject to confirm',
+         onOk() {
+            handleReject(rsvps[0].rsvpid)
+         },
+         onCancel() {
+            console.log('Cancel')
+         },
+      })
+   }
+
+   const [updateDirectRsvp, { isLoading: isDirectRsvpUpdating }] =
+      useUpdateDirectRsvpMutation()
+   const [updateOpenRsvp, { isLoading: usOPenRsvpUpdating }] =
+      useUpdateOpenRsvpMutation()
+   const [messageApi, contextHolder] = message.useMessage()
 
    if (isLoading) return null
    if (!isLoggedin) return null
 
-   const handleAccept = (rsvpid: string) => {
-      // Handle accept logic here
+   const handleAccept = async (rsvpid: string) => {
+      try {
+         const requestBody: IUpdateRsvp = {
+            rsvpid,
+            status: 'accepted',
+         }
+
+         const response = await updateDirectRsvp(requestBody)
+
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Updating RSVP...',
+               duration: 1,
+            })
+            .then(() => {
+               messageApi.success(response.data.message)
+            })
+      } catch (error: any) {
+         messageApi.error(error.data.message)
+      }
    }
 
-   const handleReject = (rsvpid: string) => {
-      // Handle reject logic here
+   const handleReject = async (rsvpid: string) => {
+      try {
+         const requestBody: IUpdateRsvp = {
+            rsvpid,
+            status: 'declined',
+         }
+
+         const response = await updateDirectRsvp(requestBody)
+
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Updating RSVP...',
+               duration: 1,
+            })
+            .then(() => {
+               messageApi.success(response.data.message)
+            })
+      } catch (error: any) {
+         messageApi.error(error.data.message)
+      }
    }
 
    return (
@@ -70,28 +144,19 @@ function UserRsvps({ rsvps }: UserRsvpsProps) {
                      }
                   />
                   <div className="flex justify-center gap-2 p-2">
-                     {
-                        // if status is accepted or rejected, don't show the buttons
-                        rsvp.status === 'accepted' ||
-                        rsvp.status == 'declined' ? (
-                           <Text>{rsvp.status}</Text>
-                        ) : (
-                           <>
-                              <Button
-                                 type="primary"
-                                 onClick={() => handleAccept(rsvp.rsvpid)}
-                              >
-                                 Accept
-                              </Button>
-                              <Button
-                                 type="default"
-                                 onClick={() => handleReject(rsvp.rsvpid)}
-                              >
-                                 Reject
-                              </Button>
-                           </>
-                        )
-                     }
+                     {rsvp.status === 'accepted' ||
+                     rsvp.status == 'declined' ? (
+                        <Text className="capitalize">{rsvp.status}</Text>
+                     ) : (
+                        <>
+                           <Button type="primary" onClick={confirm}>
+                              Accept
+                           </Button>
+                           <Button type="default" onClick={cancel}>
+                              Reject
+                           </Button>
+                        </>
+                     )}
                   </div>
                </Card>
             ))}
@@ -128,6 +193,8 @@ function UserRsvps({ rsvps }: UserRsvpsProps) {
                </div>
             </Card>
          </div>
+         {contextHolder}
+         {modalContextHolder}
       </Layout>
    )
 }

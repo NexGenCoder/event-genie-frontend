@@ -19,9 +19,8 @@ export type ICreatersvp = {
 }
 
 export type IUpdateRsvp = {
-   rsvpId: string
+   rsvpid: string
    status: 'accepted' | 'declined'
-   userId?: string // Only for open invites
 }
 
 export type IRsvpCreateResponse = {
