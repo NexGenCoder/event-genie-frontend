@@ -34,6 +34,7 @@ export const api = createApi({
       'GetUserRsvp',
       'UpdateEvent',
       'GetDirectMessages',
+      'CreateVendor',
    ],
    endpoints: () => ({}),
 })
