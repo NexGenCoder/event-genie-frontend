@@ -36,7 +36,6 @@ export const config = {
       '/events1',
       '/rsvp1',
       '/create-profile1',
-      ,
-      '/join-as-vendor',
+      '/join-as-vendor1',
    ],
 }
