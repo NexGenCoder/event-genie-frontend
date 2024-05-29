@@ -16,8 +16,8 @@ import {
    useUpdateEventMutation,
 } from '@/app/services/eventsApi'
 
-import EditEventForm from './update-event'
 import PageDetails from './page-details'
+import EditEventForm from './update-event'
 
 interface EventDetailsProps {
    eventid: string

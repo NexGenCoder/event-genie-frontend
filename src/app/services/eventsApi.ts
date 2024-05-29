@@ -95,6 +95,12 @@ export const eventsApi = api.injectEndpoints({
          }),
          invalidatesTags: ['UserEvents'],
       }),
+      getUserDetails: builder.query<any, string>({
+         query: (channelId) => `/channel/user/${channelId}`,
+      }),
+      getEventUserList: builder.query<any, string>({
+         query: (eventid) => `/event/user/${eventid}`,
+      }),
    }),
 })
 
@@ -110,4 +116,6 @@ export const {
    useGetChannelDetailsQuery,
    useUpdateEventMutation,
    useCreateChildEventMutation,
+   useGetUserDetailsQuery,
+   useGetEventUserListQuery,
 } = eventsApi

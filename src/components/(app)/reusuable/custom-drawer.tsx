@@ -1,6 +1,6 @@
-import React, { ReactNode, useState, useEffect, useRef } from 'react'
-import { IoClose } from 'react-icons/io5'
 import { Button, Layout, Typography } from 'antd'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { IoClose } from 'react-icons/io5'
 
 const { Title } = Typography
 

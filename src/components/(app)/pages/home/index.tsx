@@ -11,9 +11,9 @@ import { IMessage, ISendMessageBody } from '@/types/message'
 import { IUser } from '@/types/user'
 import socket from '@/utils/socket'
 
+import ChatMessage from '../../reusuable/chat-message'
+import SendMessage from '../../reusuable/send-message'
 import ChannelDetails from './channel-details'
-import ChatMessage from './chat-message'
-import SendMessage from './send-message'
 
 interface UserHomeProps {
    userdata: IUser

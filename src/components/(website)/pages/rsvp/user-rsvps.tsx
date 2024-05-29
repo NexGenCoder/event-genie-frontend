@@ -1,5 +1,5 @@
 'use client'
-import { Button, Card, Layout, Typography, message, Modal } from 'antd'
+import { Button, Card, Layout, message, Modal, Typography } from 'antd'
 import moment from 'moment'
 import Image from 'next/image'
 import React from 'react'

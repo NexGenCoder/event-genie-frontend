@@ -4,22 +4,22 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import {
-   useGetEventChannelsQuery,
    useGetEventDetailsQuery,
+   useGetEventUserListQuery,
 } from '@/app/services/eventsApi'
-import UserHome from '@/components/(app)/pages/home'
-import HomeSidebar from '@/components/(app)/sidebar/home'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 import AppPageComponent from '../../reusuable/app-page-component'
+import DMSidebar from '../../sidebar/dms'
+import DirectMessage from './'
 
-interface UserHomePageProps {
+interface DirectMessagePageProps {
    eventid: string
 }
 
-function UserHomePage({ eventid }: UserHomePageProps) {
-   const { data: channelList, isLoading: isEventChannelsFetching } =
-      useGetEventChannelsQuery(eventid)
+function DirectMessagePage({ eventid }: DirectMessagePageProps) {
+   const { data: userList, isLoading: isUserListFetching } =
+      useGetEventUserListQuery(eventid)
    const { data: eventData, isLoading: isEventDataFetching } =
       useGetEventDetailsQuery(eventid)
    const [searchParam] = useSearchParams()
@@ -28,12 +28,12 @@ function UserHomePage({ eventid }: UserHomePageProps) {
 
    const router = useRouter()
    useEffect(() => {
-      if (channelList && channelList?.data) {
+      if (userList && userList?.data) {
          router.push(
-            `/app/${eventid}?channelid=${channelList.data[0].channels[0].channelid}`,
+            `/app/${eventid}?channelid=${userList.data[0].channels[0].channelid}`,
          )
       }
-   }, [channelList, eventid, router])
+   }, [eventid, router, userList])
 
    const contentStyle: React.CSSProperties = {
       padding: 50,
@@ -43,7 +43,7 @@ function UserHomePage({ eventid }: UserHomePageProps) {
 
    const content = <div style={contentStyle} />
 
-   if (isEventChannelsFetching && isEventDataFetching)
+   if (isUserListFetching && isEventDataFetching)
       return (
          <Layout className="flex items-center justify-center w-full min-h-screen">
             <Spin size="large" tip="Loading..." className="w-full h-full">
@@ -77,11 +77,8 @@ function UserHomePage({ eventid }: UserHomePageProps) {
          setOpen={setOpen}
          sidebar={
             <>
-               {channelList?.data && (
-                  <HomeSidebar
-                     eventid={eventid}
-                     channelList={channelList?.data}
-                  />
+               {userList?.data && (
+                  <DMSidebar eventid={eventid} userList={userList?.data} />
                )}
             </>
          }
@@ -89,15 +86,15 @@ function UserHomePage({ eventid }: UserHomePageProps) {
             !searchParam ? (
                <Layout className="relative w-full min-h-screen flex flex-col justify-center">
                   <Result
-                     title="Select a channel"
-                     subTitle="Select a channel to start conversation"
+                     title="Select a User"
+                     subTitle="Select a user to start conversation"
                   />
                </Layout>
             ) : (
                userData &&
                searchParam &&
                searchParam[1] && (
-                  <UserHome
+                  <DirectMessage
                      userdata={userData}
                      channelId={searchParam[1]}
                      onBack={() => setOpen(!open)}
@@ -109,4 +106,4 @@ function UserHomePage({ eventid }: UserHomePageProps) {
    )
 }
 
-export default UserHomePage
+export default DirectMessagePage

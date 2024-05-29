@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 import { useCreateChildEventMutation } from '@/app/services/eventsApi'
 import { ICreateChildEventBody } from '@/types/event'
+
 import PageDetails from './page-details'
 
 interface CreateSubEventProps {

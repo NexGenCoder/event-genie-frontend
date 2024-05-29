@@ -1,48 +1,22 @@
 import { Button, Flex, Image, Space, theme, Typography } from 'antd'
 import React from 'react'
-import { BsFillCameraReelsFill } from 'react-icons/bs'
-import { FaPrayingHands, FaStore } from 'react-icons/fa'
-import { GiCook } from 'react-icons/gi'
-import { HiLightBulb } from 'react-icons/hi'
-import { IoMdHelp } from 'react-icons/io'
 import { IoArrowBack, IoSearch } from 'react-icons/io5'
-import {
-   MdLocationOn,
-   MdMusicNote,
-   MdOutlineEventSeat,
-   MdTextsms,
-} from 'react-icons/md'
-import { RiChatVoiceFill } from 'react-icons/ri'
 
-import { IChannel } from '@/types/channel'
+import { IUser } from '@/types/user'
 
 const { Text } = Typography
 
-interface ChannelDetailsProps {
-   channelDetails: IChannel
+interface DirectMessageUserDetailsProps {
+   userDetails: IUser
    onBack?: () => void
    onSearch?: () => void
 }
 
-const iconMap: { [key: string]: JSX.Element } = {
-   pray: <FaPrayingHands />,
-   text: <MdTextsms />,
-   help: <IoMdHelp />,
-   voice: <RiChatVoiceFill />,
-   camera: <BsFillCameraReelsFill />,
-   cook: <GiCook />,
-   music: <MdMusicNote />,
-   plan: <HiLightBulb />,
-   venue: <MdLocationOn />,
-   vendor: <FaStore />,
-   decor: <MdOutlineEventSeat />,
-}
-
-const ChannelDetails = ({
-   channelDetails,
+const DirectMessageUserDetails = ({
+   userDetails,
    onBack,
    onSearch,
-}: ChannelDetailsProps) => {
+}: DirectMessageUserDetailsProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
@@ -67,11 +41,17 @@ const ChannelDetails = ({
                </Space>
 
                <Flex gap="small" align="center" className="w-full">
-                  <Text className="text-3xl flex justify-center items-center">
-                     {iconMap[channelDetails.icon]}
-                  </Text>
+                  <Image
+                     src={userDetails.profile_picture}
+                     preview={false}
+                     width={40}
+                     alt={userDetails.firstname}
+                     height={40}
+                     className="rounded-full"
+                  />
+
                   <Text strong className="capitalize">
-                     {channelDetails.name}
+                     {userDetails.firstname} {userDetails.lastname}
                   </Text>
                </Flex>
             </Flex>
@@ -87,4 +67,4 @@ const ChannelDetails = ({
    )
 }
 
-export default ChannelDetails
+export default DirectMessageUserDetails

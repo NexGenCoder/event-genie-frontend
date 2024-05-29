@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const sampleChannels = [
+const userList = [
    {
       userid: '4646fdfsf46646',
       name: 'Priyanshu Kumar',
@@ -27,6 +27,7 @@ const sampleChannels = [
 
 interface DMSidebarProps {
    eventid: string
+   userList?: any
 }
 
 const DMSidebar = ({ eventid }: DMSidebarProps) => {
@@ -41,15 +42,13 @@ const DMSidebar = ({ eventid }: DMSidebarProps) => {
       >
          <Menu
             defaultSelectedKeys={
-               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
+               userList.length > 0 ? [userList[0].userid] : []
             }
             className="h-full border-l border-gray-200"
-            defaultOpenKeys={
-               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
-            }
+            defaultOpenKeys={userList.length > 0 ? [userList[0].userid] : []}
             mode="inline"
             style={{ backgroundColor: colorBgContainer, color: colorTextBase }}
-            items={sampleChannels.map((channel) => ({
+            items={userList.map((channel: any) => ({
                key: channel.userid,
                label: (
                   <Link href={`/app/${eventid}/dms?dms=${channel.userid}`}>

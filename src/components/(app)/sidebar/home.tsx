@@ -1,5 +1,6 @@
 'use client'
 import { Layout, Menu, theme } from 'antd'
+import { on } from 'events'
 import Link from 'next/link'
 import React from 'react'
 import { BsFillCameraReelsFill } from 'react-icons/bs'
@@ -16,7 +17,6 @@ import {
 import { RiChatVoiceFill } from 'react-icons/ri'
 
 import { IChannelCategoryList } from '@/types/channel'
-import { on } from 'events'
 
 const iconMap: { [key: string]: JSX.Element } = {
    pray: <FaPrayingHands />,
