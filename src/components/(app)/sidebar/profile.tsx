@@ -20,7 +20,7 @@ const ProfileSidebar = ({ eventid }: ProfileSidebarProps) => {
 
    return (
       <Layout
-         className="relative w-[200px] h-full overflow-y-auto"
+         className="relative w-full h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu
@@ -41,17 +41,6 @@ const ProfileSidebar = ({ eventid }: ProfileSidebarProps) => {
                         label: (
                            <Link href={`/app/${eventid}/profile`}>
                               View Profile
-                           </Link>
-                        ),
-                     },
-                     {
-                        key: 'edit-profile',
-                        icon: <FaUserEdit />,
-                        label: (
-                           <Link
-                              href={`/app/${eventid}/profile?tab=edit-profile`}
-                           >
-                              Edit Profile
                            </Link>
                         ),
                      },

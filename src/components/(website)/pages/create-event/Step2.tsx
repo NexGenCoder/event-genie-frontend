@@ -1,15 +1,13 @@
-import { Button, DatePicker, Flex, Form, Input, Upload } from 'antd'
+import { Button, DatePicker, Flex, Form, Input, message, Switch } from 'antd'
 import React, { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 
 import {
    useCreateEventMutation,
    useGetUserEventsQuery,
 } from '@/app/services/eventsApi'
+import ImageUpload from '@/components/profile/image-upload'
 import { ICreateEventBody } from '@/types/event'
 import { imageUpload } from '@/utils/uploadImage'
-
-import ImageUpload from '../profile/image-upload'
 
 interface Step2Props {
    prevStep: () => void
@@ -32,6 +30,7 @@ const Step2 = ({
    const [createEvent, { isLoading: isEventCreating, data: evenetCRe }] =
       useCreateEventMutation()
    const queryClient = useGetUserEventsQuery()
+   const [messageApi, contextHolder] = message.useMessage()
 
    const onFinish = async (values: any) => {
       const imageUrl = image ? await imageUpload(image, 'profile') : null
@@ -43,11 +42,19 @@ const Step2 = ({
       handleEventDataChange(eventData)
       try {
          const response = await createEvent(eventData).unwrap()
-         toast.success(response.message, { position: 'top-right' })
-         queryClient.refetch()
-         nextStep()
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Creating Event...',
+               duration: 2.5,
+            })
+            .then(() => {
+               messageApi.success(`Event Created Successfully!`)
+               queryClient.refetch()
+               nextStep()
+            })
       } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
+         messageApi.error(`Failed to create event!`)
          console.error(error)
       }
    }
@@ -66,15 +73,25 @@ const Step2 = ({
          >
             <ImageUpload setImage={setImage} defaultImage={defaultEventImage} />
          </Form.Item>
-         <Form.Item
-            name="eventName"
-            label="Event Name"
-            rules={[
-               { required: true, message: 'Please input the event name!' },
-            ]}
-         >
-            <Input />
-         </Form.Item>
+         <Flex gap="middle" className="w-full">
+            <Form.Item
+               name="eventName"
+               label="Event Name"
+               className="w-full"
+               rules={[
+                  { required: true, message: 'Please input the event name!' },
+               ]}
+            >
+               <Input />
+            </Form.Item>
+            <Form.Item
+               name="isPrivate"
+               label="Private Event"
+               className="w-full"
+            >
+               <Switch defaultChecked={false} />
+            </Form.Item>
+         </Flex>
          <Flex gap="middle" className="w-full">
             <Form.Item
                name="startDateTime"
@@ -87,7 +104,7 @@ const Step2 = ({
                   },
                ]}
             >
-               <DatePicker className="w-full" showTime />
+               <DatePicker className="w-full" />
             </Form.Item>
             <Form.Item
                name="endDateTime"
@@ -100,7 +117,10 @@ const Step2 = ({
                   },
                ]}
             >
-               <DatePicker className="w-full" showTime />
+               <DatePicker
+                  className="w-full"
+                  minDate={form.getFieldValue('startDateTime')}
+               />
             </Form.Item>
          </Flex>
          <Form.Item name="description" label="Description (Optional)">
@@ -120,7 +140,7 @@ const Step2 = ({
                Submit
             </Button>
          </div>
-         <Toaster />
+         {contextHolder}
       </Form>
    )
 }

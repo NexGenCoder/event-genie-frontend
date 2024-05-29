@@ -1,9 +1,6 @@
-import { Flex, Layout } from 'antd'
 import React from 'react'
 
-import UserAccount from '@/components/(app)/pages/account'
-import DMSidebar from '@/components/(app)/sidebar/dms'
-import Menus from '@/components/(app)/sidebar/menu'
+import DirectMessagePage from '@/components/(app)/pages/dms/dms-page'
 
 interface DMsPageProps {
    params: {
@@ -11,18 +8,8 @@ interface DMsPageProps {
    }
 }
 
-function DMsPage({ params }: DMsPageProps) {
-   return (
-      <Layout className="h-screen">
-         <Flex className="h-full w-full">
-            <Flex className="flex w-[300px] h-full ">
-               <Menus eventid={params.eventid} />
-               <DMSidebar eventid={params.eventid} />
-            </Flex>
-            <UserAccount />
-         </Flex>
-      </Layout>
-   )
+function page({ params }: DMsPageProps) {
+   return <DirectMessagePage eventid={params.eventid} />
 }
 
-export default DMsPage
+export default page

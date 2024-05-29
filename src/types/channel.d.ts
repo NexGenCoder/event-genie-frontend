@@ -1,3 +1,5 @@
+import { IChannel } from '@/types/channel'
+
 export type IChannelCategory = {
    categoryid: string
    eventid: string
@@ -30,6 +32,10 @@ export type IChannel = {
    updated_at: string
 }
 
+export type IChannelDetails = {
+   message: string
+   data: IChannel
+}
 export type ICreateChannel = {
    categoryid: string
    eventid: string

@@ -4,6 +4,8 @@ import { GrAttachment } from 'react-icons/gr'
 import { IoSend } from 'react-icons/io5'
 import { MdDelete } from 'react-icons/md'
 
+import { imageUpload } from '@/utils/uploadImage'
+
 const { TextArea } = Input
 
 interface SendMessageProps {
@@ -21,19 +23,17 @@ const SendMessage: React.FC<SendMessageProps> = ({ onSend }) => {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
 
-   const handleSend = () => {
+   const handleSend = async () => {
       if (message) {
          onSend('text', message)
          setMessage('')
       } else if (file && fileType) {
-         const reader = new FileReader()
-         reader.onloadend = () => {
-            onSend(fileType, reader.result as string)
-            setFile(null)
-            setFileType(null)
-            setPreview(null)
-         }
-         reader.readAsDataURL(file)
+         imageUpload(file, fileType).then((url) => {
+            onSend(fileType, url)
+         })
+         setFile(null)
+         setFileType(null)
+         setPreview(null)
       }
    }
 
@@ -66,7 +66,7 @@ const SendMessage: React.FC<SendMessageProps> = ({ onSend }) => {
 
    return (
       <Flex
-         className="sticky bottom-0 left-0 w-full p-4"
+         className="bottom-0 left-0 w-full p-4"
          style={{ backgroundColor: colorBgContainer }}
          vertical
       >

@@ -9,7 +9,7 @@ import { MdDarkMode } from 'react-icons/md'
 import { Provider } from 'react-redux'
 
 import { store } from '@/app/store'
-import Navbar from '@/components/navbar'
+import Navbar from '@/components/(website)/navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 

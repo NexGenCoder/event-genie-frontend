@@ -17,6 +17,7 @@ export type ICreateEventBody = {
    location: string
    eventType: string
    eventLogo: string
+   isPrivate: boolean
 }
 
 export type ICreateEventResponse = {
@@ -45,6 +46,9 @@ export type IEvent = {
    created_at: string
    updated_at: string
    userid: string
+   is_private: boolean
+   role: 'host' | 'guest' | 'vendor'
+   joining_date: string
 }
 
 export type IUserEventsList = {
@@ -55,4 +59,46 @@ export type IUserEventsList = {
 export type IEventDetailsResponse = {
    message: string
    data: IEvent
+}
+
+export type ICreateChildEventBody = {
+   parentId: string
+   eventName: string
+   startDateTime: Date
+   endDateTime: Date
+   description: string
+   location: string
+   eventType: string
+   isPrivate: boolean
+}
+
+export type IUpdateEvent = {
+   eventid: string
+   parent_eventid?: string | null
+   event_name?: string
+   start_date_time?: string
+   end_date_time?: string
+   description?: string
+   event_logo?: string
+   location?: string
+   event_type?: string
+   is_private?: boolean
+}
+
+export type IGuest = {
+   guestlistid: string
+   eventid: string
+   userid: string
+   rsvpid: string | null
+   role: string
+   username: string | null
+   firstname: string
+   lastname: string
+   profile_picture: string
+   bio: string | null
+}
+
+export type IGuestsResponse = {
+   message: string
+   data: IGuest[]
 }

@@ -48,18 +48,27 @@ function Navbar() {
                </Link>
                <Link
                   href="/vendors"
-                  title="Vendors"
+                  title="Explore Vendors and their services"
                   className="flex justify-center items-center  gap-2 py-2 px-5"
                   style={{ color: colorTextBase }}
                >
                   Vendors
                </Link>
                <Link
-                  href="/profile"
+                  href="/events"
+                  title="Your Events"
                   className="flex justify-center items-center  gap-2 py-2 px-5"
                   style={{ color: colorTextBase }}
                >
                   Events
+               </Link>
+               <Link
+                  href="/rsvp"
+                  title="Your invitations"
+                  className="flex justify-center items-center  gap-2 py-2 px-5"
+                  style={{ color: colorTextBase }}
+               >
+                  Rsvp
                </Link>
             </nav>
          </Flex>

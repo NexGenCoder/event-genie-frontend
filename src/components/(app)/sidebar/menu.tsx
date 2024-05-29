@@ -3,7 +3,9 @@ import { Avatar, Flex, Layout, theme, Tooltip, Typography } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { BsChatSquareFill } from 'react-icons/bs'
 import { FaHome } from 'react-icons/fa'
+import { IoPeopleSharp } from 'react-icons/io5'
 import { MdOutlineEventSeat } from 'react-icons/md'
 import { PiChatsFill } from 'react-icons/pi'
 
@@ -35,7 +37,7 @@ const Menus = ({ eventid }: MenusProps) => {
 
    return (
       <Layout
-         className="relative w-[70px] h-full px-2 py-4"
+         className="relative w-fit h-full px-2 py-4"
          style={{ backgroundColor: colorBgContainer }}
       >
          <div className="flex flex-col items-center justify-between h-full">
@@ -52,22 +54,38 @@ const Menus = ({ eventid }: MenusProps) => {
                   />
                )}
 
-               <Link href={`/app/${eventid}`}>
-                  <FaHome size={30} color={colorTextBase} />
-                  <Text className="text-xs text-center">Home</Text>
+               <Link
+                  href={`/app/${eventid}`}
+                  className="flex flex-col items-center justify-center"
+               >
+                  <BsChatSquareFill size={26} color={colorTextBase} />
+                  <Text className="text-xs text-center">Chats</Text>
                </Link>
 
-               <Link href={`/app/${eventid}/dms`}>
-                  <PiChatsFill size={30} color={colorTextBase} />
+               <Link
+                  href={`/app/${eventid}/dms`}
+                  className="flex flex-col items-center justify-center"
+               >
+                  <PiChatsFill size={26} color={colorTextBase} />
                   <Text className="text-xs text-center">DMs</Text>
                </Link>
-               <Link href={`/app/${eventid}/events`}>
-                  <MdOutlineEventSeat size={30} color={colorTextBase} />
+               <Link
+                  href={`/app/${eventid}/events`}
+                  className="flex flex-col items-center justify-center"
+               >
+                  <MdOutlineEventSeat size={26} color={colorTextBase} />
                   <Text className="text-xs text-center">Events</Text>
+               </Link>
+               <Link
+                  href={`/app/${eventid}/guests`}
+                  className="flex flex-col items-center justify-center"
+               >
+                  <IoPeopleSharp size={26} color={colorTextBase} />
+                  <Text className="text-xs text-center">Guests</Text>
                </Link>
             </Flex>
             <Flex gap="middle" vertical className="w-full" align="center">
-               {eventDetails && (
+               {eventDetails && eventDetails.data.role === 'host' && (
                   <CreateDropdown eventDetails={eventDetails.data} />
                )}
                <Link href={`/app/${eventid}/profile`}>

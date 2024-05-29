@@ -3,13 +3,13 @@ import {
    Flex,
    Form,
    Input,
+   message,
    Modal,
+   Result,
    Select,
    Switch,
    Tooltip,
    Typography,
-   message,
-   Result,
 } from 'antd'
 import React, { useState } from 'react'
 import { BsFillCameraReelsFill } from 'react-icons/bs'
@@ -71,7 +71,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
    const [form] = Form.useForm()
    const [newCategoryForm] = Form.useForm()
    const [categoryModalOpen, setCategoryModalOpen] = useState(false)
-   const [selectedIcon, setSelectedIcon] = useState<string>('')
+   const [selectedIcon, setSelectedIcon] = useState<string>('text')
    const [messageApi, contextHolder] = message.useMessage()
    const [showResult, setShowResult] = useState(false)
 
@@ -85,9 +85,9 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
          categoryid: values.categoryid,
          name: values.name,
          icon: values.icon,
-         type: values.type,
+         type: values.type || 'text',
          description: values.description,
-         isPrivate: values.isPrivate,
+         isPrivate: values.isPrivate || true,
       }
       try {
          await createChannel(requestBody).unwrap()
@@ -132,11 +132,22 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
       }
    }
 
+   const handleCloseModal = () => {
+      setShowResult(false)
+      form.resetFields()
+      setSelectedIcon('')
+      closeModal()
+   }
+
+   const handleCategoryCloseModal = () => {
+      newCategoryForm.resetFields()
+      setCategoryModalOpen(false)
+   }
    return (
       <>
          <Modal
             title={showResult ? 'Channel Created' : 'Create a new Channel'}
-            onCancel={closeModal}
+            onCancel={handleCloseModal}
             footer={null}
             open={isModalOpen}
          >
@@ -201,12 +212,6 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
                         name="type"
                         label="Select Channel Type"
                         className="w-full"
-                        rules={[
-                           {
-                              required: true,
-                              message: 'Please select a category',
-                           },
-                        ]}
                      >
                         <Select defaultValue="text">
                            <Option value="text">Text Channel</Option>
@@ -275,6 +280,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
                      <Switch
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
+                        defaultChecked
                      />
                   </Form.Item>
 
@@ -292,7 +298,11 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
                   title="Successfully Created"
                   subTitle="Channel Created Successfully"
                   extra={[
-                     <Button type="primary" key="console" onClick={closeModal}>
+                     <Button
+                        type="primary"
+                        key="console"
+                        onClick={handleCloseModal}
+                     >
                         Close
                      </Button>,
                   ]}

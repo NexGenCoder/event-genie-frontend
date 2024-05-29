@@ -1,5 +1,10 @@
 import { api } from '@/app/services/api'
-import { ICreatersvp, IRsvpCreateResponse, IUpdateRsvp } from '@/types/rsvp'
+import {
+   ICreatersvp,
+   IGetUserRsvp,
+   IRsvpCreateResponse,
+   IUpdateRsvp,
+} from '@/types/rsvp'
 
 export const rsvpApi = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -25,7 +30,7 @@ export const rsvpApi = api.injectEndpoints({
             method: 'PUT',
             body,
          }),
-         invalidatesTags: ['UpdateDirectRsvp'],
+         invalidatesTags: ['GetUserRsvp'],
       }),
       updateOpenRsvp: builder.mutation<any, IUpdateRsvp>({
          query: (body) => ({
@@ -35,8 +40,20 @@ export const rsvpApi = api.injectEndpoints({
          }),
          invalidatesTags: ['UpdateOpenRsvp'],
       }),
+      getUserRsvp: builder.query<IGetUserRsvp, void>({
+         query: () => ({
+            url: `/rsvp/user`,
+            method: 'GET',
+         }),
+         providesTags: ['GetUserRsvp'],
+      }),
    }),
 })
 
-export const { useCreateDirectRsvpMutation, useCreateOpenRsvpMutation } =
-   rsvpApi
+export const {
+   useCreateDirectRsvpMutation,
+   useCreateOpenRsvpMutation,
+   useUpdateDirectRsvpMutation,
+   useUpdateOpenRsvpMutation,
+   useGetUserRsvpQuery,
+} = rsvpApi

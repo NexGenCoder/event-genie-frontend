@@ -30,5 +30,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ['/app/:path*', '/create-event', '/join-as-vendor'],
+   matcher: [
+      '/app1/:path*',
+      '/create-event1',
+      '/events1',
+      '/rsvp1',
+      '/create-profile1',
+      ,
+      '/join-as-vendor',
+   ],
 }

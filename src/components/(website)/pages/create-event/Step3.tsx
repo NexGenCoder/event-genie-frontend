@@ -8,8 +8,8 @@ function Step3() {
          title="Event Created Successfully!"
          subTitle="Your event has been created successfully."
          extra={[
-            <Button type="primary" key="console">
-               Go to App
+            <Button type="default" href="/" key="console">
+               Back to Home
             </Button>,
          ]}
       />

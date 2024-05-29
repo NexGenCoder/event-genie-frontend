@@ -1,107 +1,136 @@
 'use client'
-import { Flex, Layout } from 'antd'
-import { useSearchParams } from 'next/navigation'
+import { Flex, Layout, Result } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
-import { Message, SendMessageBody } from '@/types/message'
+import { useGetChannelDetailsQuery } from '@/app/services/eventsApi'
+import {
+   useGetMessagesQuery,
+   useSendMessagesMutation,
+} from '@/app/services/messageApi'
+import { IMessage, ISendMessageBody } from '@/types/message'
+import { IUser } from '@/types/user'
+import socket from '@/utils/socket'
 
-import ChatMessage from './chat-message'
-import SendMessage from './send-message'
+import ChatMessage from '../../reusuable/chat-message'
+import SendMessage from '../../reusuable/send-message'
+import ChannelDetails from './channel-details'
 
-function UserHome() {
-   const [searchParams] = useSearchParams()
-   const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
-   const [messages, setMessages] = useState<Message[]>([
-      {
-         messageid: '1',
-         channelid: 'general',
-         type: 'text',
-         content: 'Hello, how are you?',
-         sender: {
-            userid: '1',
-            name: 'Alice',
-            avatar:
-               'https://lh3.googleusercontent.com/a/ACg8ocJ2138fIy0v6TcbDsGZOZm5_NPylKzQLNupK8RpHWC_66N4uYN3=s96-c',
-         },
-         timestamp: '10:00 AM',
-      },
-      {
-         messageid: '2',
-         channelid: 'general',
-         type: 'image',
-         content:
-            'https://lh3.googleusercontent.com/a/ACg8ocJ2138fIy0v6TcbDsGZOZm5_NPylKzQLNupK8RpHWC_66N4uYN3=s96-c',
-         sender: {
-            userid: '2',
-            name: 'Bob',
-            avatar:
-               'https://lh3.googleusercontent.com/a/ACg8ocJ2138fIy0v6TcbDsGZOZm5_NPylKzQLNupK8RpHWC_66N4uYN3=s96-c',
-         },
-         timestamp: '10:01 AM',
-      },
-      {
-         messageid: '3',
-         channelid: 'general',
-         type: 'video',
-         content: 'https://www.w3schools.com/html/mov_bbb.mp4',
-         sender: {
-            userid: '3',
-            name: 'Charlie',
-            avatar:
-               'https://lh3.googleusercontent.com/a/ACg8ocJ2138fIy0v6TcbDsGZOZm5_NPylKzQLNupK8RpHWC_66N4uYN3=s96-c',
-         },
-         timestamp: '10:02 AM',
-      },
-   ])
+interface UserHomeProps {
+   userdata: IUser
+   channelId: string
+   onBack?: () => void
+}
+
+function UserHome({ userdata, channelId, onBack }: UserHomeProps) {
+   const [messages, setMessages] = useState<IMessage[]>([])
    const messagesEndRef = useRef<HTMLDivElement>(null)
 
    const scrollToBottom = () => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+      messagesEndRef.current?.scrollIntoView({ behavior: 'instant' })
    }
+
+   const [sendMessages, { isLoading: isMessageSending }] =
+      useSendMessagesMutation()
+
+   const { data: messageData, isLoading } = useGetMessagesQuery(channelId)
+   const { data: channelDetails } = useGetChannelDetailsQuery(channelId)
+
+   useEffect(() => {
+      if (messageData) {
+         setMessages(messageData)
+      }
+   }, [messageData])
+
+   useEffect(() => {
+      console.log('Connecting to server')
+      socket.on('connect', () => {
+         console.log('Connected to server')
+      })
+      socket.emit('join', channelId)
+
+      socket.on('disconnect', () => {
+         console.log('Disconnected from server')
+      })
+
+      return () => {
+         socket.emit('leave', channelId)
+         socket.off('message')
+      }
+   }, [channelId])
+
+   useEffect(() => {
+      const handleNewMessage = (message: IMessage) => {
+         console.log('message', message)
+         setMessages((prevMessages) => [...prevMessages, message])
+      }
+
+      socket.on('message', handleNewMessage)
+
+      return () => {
+         socket.off('message', handleNewMessage)
+      }
+   }, [channelId])
 
    useEffect(() => {
       scrollToBottom()
    }, [messages])
 
-   const handleSend = (type: 'text' | 'image' | 'video', content: string) => {
-      const newMessage: Message = {
-         messageid: Math.random().toString(36).substr(2, 9), // Generate a random id for simplicity
-         channelid: 'general',
+   const handleSend = async (
+      type: 'text' | 'image' | 'video',
+      content: string,
+   ) => {
+      const messageBody: ISendMessageBody = {
+         channelid: channelId,
          type,
          content,
          sender: {
-            userid: '4',
-            name: 'You',
-            avatar:
-               'https://lh3.googleusercontent.com/a/ACg8ocJ2138fIy0v6TcbDsGZOZm5_NPylKzQLNupK8RpHWC_66N4uYN3=s96-c',
+            userid: userdata?.userid,
+            name: `${userdata?.firstname} ${userdata?.lastname}`,
+            avatar: userdata?.profile_picture,
          },
-         timestamp: new Date().toLocaleTimeString(),
+         timestamp: new Date().toISOString(),
       }
-      const messageBody: SendMessageBody = {
-         channelid: 'general',
-         type,
-         content,
-      }
-      console.log({ messageBody })
 
-      setMessages([...messages, newMessage])
+      socket.emit('message', messageBody)
+      try {
+         await sendMessages({ channelId, body: messageBody })
+      } catch (error) {
+         console.error('Error sending message', error)
+      }
+   }
+
+   const messageSearchHandler = () => {
+      console.log('Search')
    }
 
    return (
-      <Layout className="relative w-full h-screen overflow-y-auto">
-         <Flex vertical gap="middle" className="p-4">
-            {messages.map((message) => (
-               <ChatMessage
-                  key={message.messageid}
-                  type={message.type}
-                  content={message.content}
-                  sender={message.sender}
-                  timestamp={message.timestamp}
-               />
-            ))}
+      <Layout className="w-full h-screen flex flex-col justify-between">
+         {channelDetails && (
+            <ChannelDetails
+               channelDetails={channelDetails.data}
+               onBack={onBack}
+               onSearch={messageSearchHandler}
+            />
+         )}
+         <Layout className="flex-1 overflow-y-auto">
+            {messages && messages.length ? (
+               <Flex vertical gap="middle" className="p-4">
+                  {messages.map((message) => (
+                     <ChatMessage
+                        key={message.messageid}
+                        userid={userdata.userid}
+                        {...message}
+                     />
+                  ))}
+               </Flex>
+            ) : isLoading ? (
+               <Result title="Loading messages..." />
+            ) : (
+               <Result title="No messages found" />
+            )}
             <div ref={messagesEndRef} />
-         </Flex>
+         </Layout>
+
          <SendMessage onSend={handleSend} />
       </Layout>
    )

@@ -1,16 +1,16 @@
 'use client'
-import { Button, Flex, Input, Tooltip } from 'antd'
+import { Button, Flex, Input, message, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import Text from 'antd/es/typography/Text'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 import { CgNametag } from 'react-icons/cg'
 import { MdAlternateEmail, MdDoneAll } from 'react-icons/md'
 
 import {
-   useAddUserDetailsMutation,
    useCheckusernameQuery,
    useGetSelfQuery,
+   useUpdateUserDetailsMutation,
 } from '@/app/services/authApi'
 import ImageUpload from '@/components/profile/image-upload'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -18,28 +18,24 @@ import { IUser } from '@/types/user'
 import { imageUpload } from '@/utils/uploadImage'
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
 
-interface AddUserDetailsFormProps {
-   userData: IUser
-}
-
-export default function AddUserDetailsForm({
-   userData,
-}: AddUserDetailsFormProps) {
+export default function CreateUserProfileForm() {
    const [image, setImage] = useState<File | null>(null)
    const [formData, setFormData] = useState({
-      username: userData?.username || '',
-      email: userData?.email || '',
-      firstname: userData?.firstname || '',
-      lastname: userData?.lastname || '',
-      bio: userData?.bio || '',
-   })
+      firstname: '',
+      lastname: '',
+      username: '',
+      email: '',
+      bio: '',
+   } as IUser)
 
+   const [messageApi, contextHolder] = message.useMessage()
+   const router = useRouter()
    const [skip, setSkip] = useState(true)
    const debouncedUsername = useDebounce(formData.username, 500)
    const { data } = useCheckusernameQuery(debouncedUsername, { skip: skip })
 
-   const [addUserDetails, { isLoading: isAddingUserDetails }] =
-      useAddUserDetailsMutation()
+   const [updateUserDetails, { isLoading: isAddingUserDetails }] =
+      useUpdateUserDetailsMutation()
    const queryClient = useGetSelfQuery()
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target
@@ -60,17 +56,24 @@ export default function AddUserDetailsForm({
       const imageUrl = image ? await imageUpload(image, 'profile') : null
       const formDataWithImage = {
          ...formData,
-         profile_picture: imageUrl || userData?.profile_picture,
+         profilePicture: imageUrl || null,
       }
 
       try {
-         await addUserDetails(formDataWithImage).unwrap()
+         const response = await updateUserDetails(formDataWithImage).unwrap()
          queryClient.refetch()
-         toast.success('User details added successfully', {
-            position: 'top-right',
-         })
-      } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
+         messageApi
+            .open({
+               type: 'success',
+               content: 'Profile updated successfully',
+               duration: 3,
+            })
+            .then(() => {
+               router.push('/create-event')
+            })
+      } catch (error: any) {
+         messageApi.error(error.data.message)
+
          console.error(error)
       }
    }
@@ -85,10 +88,7 @@ export default function AddUserDetailsForm({
       >
          <Tooltip title="Upload Profile Picture">
             <div className="absolute  md:top-[.5rem] top-[1rem]">
-               <ImageUpload
-                  setImage={setImage}
-                  defaultImage={userData?.profile_picture}
-               />
+               <ImageUpload setImage={setImage} defaultImage={''} />
             </div>
          </Tooltip>
          <div className="w-full flex flex-col gap-4 md:pt-[5rem] pt-[3rem] p-4 md:p-8  rounded-xl mt-20">
@@ -205,7 +205,7 @@ export default function AddUserDetailsForm({
                </Button>
             </div>
          </div>
-         <Toaster />
+         {contextHolder}
       </Flex>
    )
 }

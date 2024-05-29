@@ -5,12 +5,12 @@ import {
    Input,
    InputNumber,
    Layout,
+   message,
    theme,
    Typography,
 } from 'antd'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 import { CiEdit } from 'react-icons/ci'
 import { FcGoogle } from 'react-icons/fc'
 import { IoMdLogIn } from 'react-icons/io'
@@ -21,6 +21,7 @@ import {
    useVerifyOtpMutation,
 } from '@/app/services/authApi'
 import { API } from '@/constants'
+import { IUserResponse } from '@/types/user'
 
 import { CountrySelector } from './country-selector'
 
@@ -32,16 +33,15 @@ function LoginForm() {
    const [formData, setFormData] = useState({ mobile: '' })
    const [otp, setOtp] = useState<string>('')
    const [showOtp, setShowOtp] = useState(false)
+   const [messageApi, contextHolder] = message.useMessage()
 
    const {
       token: { colorTextBase },
    } = theme.useToken()
 
-   const [sendOtp, { isLoading: isSendingOtp, data: sendOtpResponse }] =
-      useSendOtpMutation()
+   const [sendOtp, { isLoading: isSendingOtp }] = useSendOtpMutation()
 
-   const [verifyOtp, { isLoading: isOtpVerifying, data: verifyOtpResponse }] =
-      useVerifyOtpMutation()
+   const [verifyOtp, { isLoading: isOtpVerifying }] = useVerifyOtpMutation()
 
    const mobileInputOnChange = (value: any) => {
       if (typeof value !== 'string') {
@@ -67,11 +67,18 @@ function LoginForm() {
       }
       try {
          const response = await sendOtp(requestBody).unwrap()
-         toast.success(response.message, { position: 'top-right' })
-         setShowOtp(true)
-      } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
-         console.error(error)
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Sending OTP...',
+               duration: isSendingOtp ? 0 : 2,
+            })
+            .then(() => {
+               message.success(response.message, 2)
+               setShowOtp(true)
+            })
+      } catch (error: any) {
+         message.error(error.data.message, 2)
       }
    }
 
@@ -82,16 +89,23 @@ function LoginForm() {
       }
 
       try {
-         const response = await verifyOtp(requestBody).unwrap()
-         toast.success(response.message, { position: 'top-right' })
-         if (response?.data) {
-            router.push('/profile')
-         } else {
-            router.push('/edit-profile')
-         }
-      } catch (error) {
-         toast.error('Error Occurred', { position: 'top-right' })
-         console.error(error)
+         const response: IUserResponse = await verifyOtp(requestBody).unwrap()
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Verifying OTP...',
+               duration: isOtpVerifying ? 0 : 2,
+            })
+            .then(() => {
+               message.success(response.message, 2)
+               if (response?.data.is_profile_completed) {
+                  router.push('/')
+               } else {
+                  router.push('/create-profile')
+               }
+            })
+      } catch (error: any) {
+         message.error(error.data.message, 2)
       }
    }
 
@@ -104,7 +118,7 @@ function LoginForm() {
    }
 
    return (
-      <Layout className="flex flex-col justify-center w-full p-4 rounded-[20px]">
+      <Layout className="flex flex-col h-full justify-center md:w-1/2 w-full p-6">
          <Title level={2} className="text-center">
             Login
          </Title>
@@ -204,7 +218,7 @@ function LoginForm() {
                <FcGoogle className="inline-block mr-2" /> Sign In With Google
             </Button>
          </div>
-         <Toaster />
+         {contextHolder}
       </Layout>
    )
 }

@@ -4,21 +4,19 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
-
 const { Text, Title } = Typography
 
 const homeButtons = [
    {
       id: 1,
-      name: 'Organize Event',
-      image_url: '/svgs/addEvent.svg',
+      name: 'Create Event',
+      image_url: '/svgs/add.svg',
       url: '/create-event',
    },
    {
       id: 2,
       name: 'Join Event',
-      image_url: '/svgs/add.svg',
+      image_url: '/svgs/addEvent.svg',
       url: '/join-event',
    },
    {
@@ -31,10 +29,6 @@ const homeButtons = [
 
 function CreateButtons() {
    const router = useRouter()
-   const { isLoggedin, isLoading } = useIsAuthenticated()
-
-   if (isLoading) return null
-   if (!isLoggedin) return null
 
    return (
       <Layout className="w-full flex flex-col gap-4 items-center justify-center md:w-[80%] ">

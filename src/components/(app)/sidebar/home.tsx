@@ -1,5 +1,6 @@
 'use client'
 import { Layout, Menu, theme } from 'antd'
+import { on } from 'events'
 import Link from 'next/link'
 import React from 'react'
 import { BsFillCameraReelsFill } from 'react-icons/bs'
@@ -33,16 +34,17 @@ const iconMap: { [key: string]: JSX.Element } = {
 interface HomeSidebarProps {
    eventid: string
    channelList: IChannelCategoryList[]
+   onBack?: () => void
 }
 
-const HomeSidebar = ({ eventid, channelList }: HomeSidebarProps) => {
+const HomeSidebar = ({ eventid, channelList, onBack }: HomeSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
 
    return (
       <Layout
-         className="relative w-[200px] h-full overflow-y-auto"
+         className="relative w-full h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu

@@ -1,68 +1,53 @@
 'use client'
-import { Layout, Menu, theme } from 'antd'
-import Image from 'next/image'
+import { Flex, Image, Layout, Menu, theme } from 'antd'
 import Link from 'next/link'
 import React from 'react'
 
-const sampleChannels = [
-   {
-      userid: '4646fdfsf46646',
-      name: 'Priyanshu Kumar',
-      profile_picture:
-         'https://res.cloudinary.com/dspyieeio/image/upload/v1716355250/linktree/ydxmbjg3lkgp7yblxjxv.png',
-   },
-   {
-      userid: 'fdsfds4f5ds6f46',
-      name: 'Deepak Yadav',
-      profile_picture:
-         'https://res.cloudinary.com/dspyieeio/image/upload/v1716355250/linktree/ydxmbjg3lkgp7yblxjxv.png',
-   },
-   {
-      userid: 'dsfdsf454654654',
-      name: 'Sunny Sahsi',
-      profile_picture:
-         'https://res.cloudinary.com/dspyieeio/image/upload/v1716355250/linktree/ydxmbjg3lkgp7yblxjxv.png',
-   },
-]
-
 interface DMSidebarProps {
    eventid: string
+   userList?: any
 }
 
-const DMSidebar = ({ eventid }: DMSidebarProps) => {
+const DMSidebar = ({ eventid, userList }: DMSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
 
    return (
       <Layout
-         className="relative w-[200px] h-full overflow-y-auto"
+         className="relative w-full h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu
             defaultSelectedKeys={
-               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
+               userList.length > 0 ? [userList[0].userid] : []
             }
             className="h-full border-l border-gray-200"
-            defaultOpenKeys={
-               sampleChannels.length > 0 ? [sampleChannels[0].userid] : []
-            }
+            defaultOpenKeys={userList.length > 0 ? [userList[0].userid] : []}
             mode="inline"
             style={{ backgroundColor: colorBgContainer, color: colorTextBase }}
-            items={sampleChannels.map((channel) => ({
-               key: channel.userid,
+            items={userList.map((guest: any) => ({
+               key: guest.userid,
                label: (
-                  <Link href={`/app/${eventid}/dms?dms=${channel.userid}`}>
-                     {channel.name}
+                  <Link href={`/app/${eventid}/dms?dms=${guest.userid}`}>
+                     <Flex
+                        gap="middle"
+                        align="center"
+                        style={{ color: colorTextBase }}
+                     >
+                        <Image
+                           src={guest.profile_picture}
+                           alt={`${guest.firstname} ${guest.lastname}`}
+                           width={20}
+                           height={20}
+                           className="rounded-full"
+                        />
+                        {`${guest.firstname} ${guest.lastname}`}{' '}
+                        {guest.role === 'host' && '(Host)'}
+                        {guest.role === 'vendor' && '(Vendor)'}
+                        {guest.role === 'guest' && '(Guest)'}
+                     </Flex>
                   </Link>
-               ),
-               icon: (
-                  <Image
-                     src={channel.profile_picture}
-                     alt={channel.name}
-                     width={20}
-                     height={20}
-                  />
                ),
             }))}
          />

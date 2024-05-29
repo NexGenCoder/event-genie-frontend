@@ -1,23 +1,24 @@
-import React, { useState } from 'react'
 import {
    Button,
    Flex,
    Form,
    Input,
+   message,
    Modal,
    Radio,
+   Result,
    Select,
    Typography,
-   message,
-   Result,
 } from 'antd'
-import { IEvent } from '@/types/event'
-import { ICreatersvp } from '@/types/rsvp'
+import React, { useState } from 'react'
+
 import { IUser } from '@/app/services/authApi'
 import {
    useCreateDirectRsvpMutation,
    useCreateOpenRsvpMutation,
 } from '@/app/services/rsvpApi'
+import { IEvent } from '@/types/event'
+import { ICreatersvp } from '@/types/rsvp'
 
 const { Text } = Typography
 const { Option } = Select
@@ -57,21 +58,21 @@ const CreateRsvpModal = ({
                }
                try {
                   await createDirectRsvp(requestBody).unwrap()
-               } catch (error) {
-                  messageApi.error("Couldn't create RSVP")
+                  messageApi
+                     .open({
+                        type: 'loading',
+                        content: `Inviting people...`,
+                        duration: 2.5,
+                     })
+                     .then(() => {
+                        messageApi.success(
+                           `Invited for ${eventDetails.event_name} successfully`,
+                        )
+                        setShowResult(true)
+                     })
+               } catch (error: any) {
+                  messageApi.error(error.data.message)
                }
-            })
-         messageApi
-            .open({
-               type: 'loading',
-               content: `Inviting people...`,
-               duration: 2.5,
-            })
-            .then(() => {
-               messageApi.success(
-                  `Invited for ${eventDetails.event_name} successfully`,
-               )
-               setShowResult(true)
             })
       } else {
          const requestBody: ICreatersvp = {
@@ -92,8 +93,8 @@ const CreateRsvpModal = ({
                   setRsvpId(response.data.rsvpid)
                   setShowResult(true)
                })
-         } catch (error) {
-            messageApi.error("Couldn't create RSVP")
+         } catch (error: any) {
+            messageApi.error(error.data.message)
          }
       }
    }

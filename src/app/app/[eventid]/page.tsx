@@ -1,42 +1,44 @@
-'use client'
-import { Flex, Layout } from 'antd'
 import React from 'react'
 
-import {
-   useGetEventChannelsQuery,
-   useGetEventDetailsQuery,
-} from '@/app/services/eventsApi'
-import UserAccount from '@/components/(app)/pages/account'
-import UserHome from '@/components/(app)/pages/home'
-import HomeSidebar from '@/components/(app)/sidebar/home'
-import Menus from '@/components/(app)/sidebar/menu'
+import UserHomePage from '@/components/(app)/pages/home/user-home-page'
 
-interface UserHomePageProps {
+interface PageProps {
    params: {
       eventid: string
    }
 }
 
-function UserHomePage({ params }: UserHomePageProps) {
-   const { data: channelList } = useGetEventChannelsQuery(params.eventid)
-
-   return (
-      <Layout className="h-screen">
-         <Flex className="h-full w-full">
-            <Flex className="flex w-[300px] h-full ">
-               <Menus eventid={params.eventid} />
-
-               {channelList?.data && (
-                  <HomeSidebar
-                     eventid={params.eventid}
-                     channelList={channelList?.data}
-                  />
-               )}
-            </Flex>
-            <UserHome />
-         </Flex>
-      </Layout>
-   )
+function page({ params }: PageProps) {
+   return <UserHomePage eventid={params.eventid} />
 }
 
-export default UserHomePage
+export default page
+
+export function generateMetadata() {
+   return {
+      title: 'Event Genie - App Home',
+      description:
+         "Event Genie is a platform that helps you find and create events that you'll love. Discover events tailored to your interests, connect with like-minded individuals, and create memorable experiences.",
+      image: '/next.svg',
+      url: 'https://getogether.com',
+      keywords:
+         'events, event planning, social events, local events, event discovery',
+      author: 'Event Genie Team',
+      openGraph: {
+         type: 'website',
+         url: 'https://getogether.com',
+         title: 'Event Genie - Home',
+         description:
+            "Event Genie is a platform that helps you find and create events that you'll love. Discover events tailored to your interests, connect with like-minded individuals, and create memorable experiences.",
+         image: '/next.svg',
+      },
+      twitter: {
+         card: 'summary_large_image',
+         site: '@eventgenie',
+         title: 'Event Genie - Home',
+         description:
+            "Event Genie is a platform that helps you find and create events that you'll love. Discover events tailored to your interests, connect with like-minded individuals, and create memorable experiences.",
+         image: '/next.svg',
+      },
+   }
+}
