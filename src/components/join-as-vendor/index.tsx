@@ -11,6 +11,7 @@ const VendorOnboarding = () => {
    const [form] = Form.useForm()
    const [messageApi, contextHolder] = message.useMessage()
    const [createVendor] = useCreateVendorMutation()
+   const [numberError, setNumberError] = useState(false)
 
    const handleSubmit = async (values: IVendorCreateBody) => {
       const brandUrl = brandImage
@@ -25,7 +26,10 @@ const VendorOnboarding = () => {
          phone: values.phone,
       }
       try {
-         await createVendor(requestBody).unwrap()
+         const result = await createVendor(requestBody).unwrap()
+         if (result.message != 'Vendor created successfully') {
+            throw Error(result.message)
+         }
          messageApi
             .open({
                type: 'loading',
@@ -34,9 +38,11 @@ const VendorOnboarding = () => {
             })
             .then(() => {
                messageApi.success('Vendor Onboarded Successfully!')
+               form.resetFields()
             })
-      } catch (error) {
-         messageApi.error("Couldn't Onboard Vendor")
+      } catch (error: any) {
+         console.log(error)
+         messageApi.error(`Error onboarding the vendor: ${error.data.message}`)
       }
    }
 
@@ -85,6 +91,7 @@ const VendorOnboarding = () => {
                   label="Email"
                   rules={[
                      { required: true, message: 'Please input the Email!' },
+                     { type: 'email', message: 'Input must be valid Email' },
                   ]}
                >
                   <Input />
@@ -99,7 +106,7 @@ const VendorOnboarding = () => {
                      },
                   ]}
                >
-                  <Input type="number" className="w-full" />
+                  <Input className="w-full" minLength={10} maxLength={10} />
                </Form.Item>
                <Form.Item>
                   <Flex justify="end">
