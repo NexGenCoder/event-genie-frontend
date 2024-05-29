@@ -29,9 +29,7 @@ function DirectMessagePage({ eventid }: DirectMessagePageProps) {
    const router = useRouter()
    useEffect(() => {
       if (userList && userList?.data) {
-         router.push(
-            `/app/${eventid}?channelid=${userList.data[0].channels[0].channelid}`,
-         )
+         router.push(`/app/${eventid}/dms?dms=${userList?.data[0].userid}`)
       }
    }, [eventid, router, userList])
 
@@ -96,7 +94,7 @@ function DirectMessagePage({ eventid }: DirectMessagePageProps) {
                searchParam[1] && (
                   <DirectMessage
                      userdata={userData}
-                     channelId={searchParam[1]}
+                     receiverid={searchParam[1]}
                      onBack={() => setOpen(!open)}
                   />
                )

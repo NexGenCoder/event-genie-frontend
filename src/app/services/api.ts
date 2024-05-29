@@ -33,6 +33,7 @@ export const api = createApi({
       'ChannelDetails',
       'GetUserRsvp',
       'UpdateEvent',
+      'GetDirectMessages',
    ],
    endpoints: () => ({}),
 })

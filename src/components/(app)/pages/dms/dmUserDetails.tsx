@@ -17,6 +17,7 @@ const DirectMessageUserDetails = ({
    onBack,
    onSearch,
 }: DirectMessageUserDetailsProps) => {
+   console.log('🚀 ~ userDetails:', userDetails)
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()

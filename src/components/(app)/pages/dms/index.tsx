@@ -4,24 +4,28 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { useGetUserDetailsQuery } from '@/app/services/eventsApi'
 import {
-   useGetMessagesQuery,
-   useSendMessagesMutation,
+   useGetDirectMessagesQuery,
+   useSendDirectMessagesMutation,
 } from '@/app/services/messageApi'
-import { IMessage, ISendMessageBody } from '@/types/message'
+import {
+   IDirectMessageInput,
+   IMessage,
+   ISendMessageBody,
+} from '@/types/message'
 import { IUser } from '@/types/user'
 import socket from '@/utils/socket'
 
 import ChatMessage from '../../reusuable/chat-message'
 import SendMessage from '../../reusuable/send-message'
-import DirectMessageUserDetails from './direct-message-user-details'
+import DirectMessageUserDetails from './dmUserDetails'
 
 interface DirectMessageProps {
    userdata: IUser
-   channelId: string
+   receiverid: string
    onBack?: () => void
 }
 
-function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
+function DirectMessage({ userdata, receiverid, onBack }: DirectMessageProps) {
    const [messages, setMessages] = useState<IMessage[]>([])
    const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -30,25 +34,13 @@ function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
    }
 
    const [sendMessages, { isLoading: isMessageSending }] =
-      useSendMessagesMutation()
+      useSendDirectMessagesMutation()
 
-   const { data: messageData, isLoading } = useGetMessagesQuery(channelId)
-   // const { data: userDetails } = useGetUserDetailsQuery(channelId)
-   const userDetails = {
-      data: {
-         profile_picture: '/logo.jpg',
-         userid: '1',
-         username: 'username',
-         email: 'email',
-         firstname: 'firstname',
-         lastname: 'lastname',
-         bio: 'bio',
-         is_mobile_verified: true,
-         is_email_verified: true,
-         is_profile_completed: true,
-         is_account_suspended: true,
-      },
-   }
+   const { data: messageData, isLoading } = useGetDirectMessagesQuery({
+      user1id: userdata.userid,
+      user2id: receiverid,
+   })
+   const { data: userDetails } = useGetUserDetailsQuery(receiverid)
 
    useEffect(() => {
       if (messageData) {
@@ -61,30 +53,28 @@ function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
       socket.on('connect', () => {
          console.log('Connected to server')
       })
-      socket.emit('join', channelId)
+      socket.emit('join', receiverid)
 
       socket.on('disconnect', () => {
          console.log('Disconnected from server')
       })
 
       return () => {
-         socket.emit('leave', channelId)
+         socket.emit('leave', receiverid)
          socket.off('message')
       }
-   }, [channelId])
+   }, [receiverid])
 
    useEffect(() => {
       const handleNewMessage = (message: IMessage) => {
          console.log('message', message)
          setMessages((prevMessages) => [...prevMessages, message])
       }
-
       socket.on('message', handleNewMessage)
-
       return () => {
          socket.off('message', handleNewMessage)
       }
-   }, [channelId])
+   }, [receiverid])
 
    useEffect(() => {
       scrollToBottom()
@@ -95,7 +85,7 @@ function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
       content: string,
    ) => {
       const messageBody: ISendMessageBody = {
-         channelid: channelId,
+         channelid: receiverid,
          type,
          content,
          sender: {
@@ -106,9 +96,16 @@ function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
          timestamp: new Date().toISOString(),
       }
 
+      const requestBody: IDirectMessageInput = {
+         senderid: userdata.userid,
+         receiverid: receiverid,
+         type: type,
+         content: content,
+      }
+
       socket.emit('message', messageBody)
       try {
-         await sendMessages({ channelId, body: messageBody })
+         await sendMessages(requestBody)
       } catch (error) {
          console.error('Error sending message', error)
       }
@@ -122,7 +119,7 @@ function DirectMessage({ userdata, channelId, onBack }: DirectMessageProps) {
       <Layout className="w-full h-screen flex flex-col justify-between">
          {userDetails && (
             <DirectMessageUserDetails
-               userDetails={userDetails.data}
+               userDetails={userDetails.data[0]}
                onBack={onBack}
                onSearch={messageSearchHandler}
             />

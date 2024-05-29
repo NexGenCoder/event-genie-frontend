@@ -84,3 +84,21 @@ export type IUpdateEvent = {
    event_type?: string
    is_private?: boolean
 }
+
+export type IGuest = {
+   guestlistid: string
+   eventid: string
+   userid: string
+   rsvpid: string | null
+   role: string
+   username: string | null
+   firstname: string
+   lastname: string
+   profile_picture: string
+   bio: string | null
+}
+
+export type IGuestsResponse = {
+   message: string
+   data: IGuest[]
+}

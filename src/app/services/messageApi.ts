@@ -1,5 +1,9 @@
 import { api } from '@/app/services/api'
-import { IMessage, ISendMessageBody } from '@/types/message'
+import {
+   IDirectMessageInput,
+   IMessage,
+   ISendMessageBody,
+} from '@/types/message'
 
 export const messageApi = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -18,7 +22,27 @@ export const messageApi = api.injectEndpoints({
          query: (channelId) => `/channels/${channelId}/messages`,
          providesTags: ['GetMessages'],
       }),
+      sendDirectMessages: builder.mutation<void, IDirectMessageInput>({
+         query: (body) => ({
+            url: 'chats',
+            method: 'POST',
+            body,
+         }),
+         invalidatesTags: ['GetDirectMessages'],
+      }),
+      getDirectMessages: builder.query<
+         IMessage[],
+         { user1id: string; user2id: string }
+      >({
+         query: ({ user1id, user2id }) => `/chats/${user1id}/${user2id}`,
+         providesTags: ['GetDirectMessages'],
+      }),
    }),
 })
 
-export const { useSendMessagesMutation, useGetMessagesQuery } = messageApi
+export const {
+   useSendMessagesMutation,
+   useGetMessagesQuery,
+   useSendDirectMessagesMutation,
+   useGetDirectMessagesQuery,
+} = messageApi

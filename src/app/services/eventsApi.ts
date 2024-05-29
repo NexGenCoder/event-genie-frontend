@@ -14,6 +14,7 @@ import {
    ICreateEventResponse,
    IEventDetailsResponse,
    IEventTypeResponse,
+   IGuestsResponse,
    IUserEventsList,
 } from '@/types/event'
 
@@ -96,10 +97,10 @@ export const eventsApi = api.injectEndpoints({
          invalidatesTags: ['UserEvents'],
       }),
       getUserDetails: builder.query<any, string>({
-         query: (channelId) => `/channel/user/${channelId}`,
+         query: (guestlistid) => `/event/guest/${guestlistid}`,
       }),
-      getEventUserList: builder.query<any, string>({
-         query: (eventid) => `/event/user/${eventid}`,
+      getEventUserList: builder.query<IGuestsResponse, string>({
+         query: (eventid) => `/event/guests/${eventid}`,
       }),
    }),
 })
