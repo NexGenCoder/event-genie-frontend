@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 
 import { useCreateChildEventMutation } from '@/app/services/eventsApi'
 import { ICreateChildEventBody } from '@/types/event'
+import PageDetails from './page-details'
 
 interface CreateSubEventProps {
    parentId: string
+   onBack: () => void
 }
 
-const CreateSubEvent = ({ parentId }: CreateSubEventProps) => {
+const CreateSubEvent = ({ parentId, onBack }: CreateSubEventProps) => {
    const [form] = Form.useForm()
    const [createChildEvent, { isLoading }] = useCreateChildEventMutation()
    const [messageApi, contextHolder] = message.useMessage()
@@ -35,7 +37,8 @@ const CreateSubEvent = ({ parentId }: CreateSubEventProps) => {
    }
 
    return (
-      <Card title="Create Sub-Event" style={{ width: '100%' }}>
+      <Card>
+         <PageDetails title="Add Sub-Event" onBack={onBack}></PageDetails>
          <Form
             form={form}
             layout="vertical"

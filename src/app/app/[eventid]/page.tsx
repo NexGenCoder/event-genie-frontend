@@ -9,11 +9,7 @@ interface PageProps {
 }
 
 function page({ params }: PageProps) {
-   return (
-      <>
-         <UserHomePage eventid={params.eventid} />
-      </>
-   )
+   return <UserHomePage eventid={params.eventid} />
 }
 
 export default page

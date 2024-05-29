@@ -10,6 +10,7 @@ import {
    message,
    Modal,
    Tooltip,
+   Typography,
 } from 'antd'
 import React, { useState } from 'react'
 import { GoUnverified } from 'react-icons/go'
@@ -25,12 +26,17 @@ import ImageUpload from '@/components/profile/image-upload'
 import { IUser } from '@/types/user'
 import { imageUpload } from '@/utils/uploadImage'
 
+import PageDetails from './page-details'
+
+const { Text } = Typography
+
 import type { GetProp } from 'antd'
 import type { OTPProps } from 'antd/es/input/OTP'
 interface EditProfileProps {
    user: IUser
+   onBack: () => void
 }
-const EditProfile = ({ user }: EditProfileProps) => {
+const EditProfile = ({ user, onBack }: EditProfileProps) => {
    const [form] = Form.useForm()
    const [image, setImage] = useState<File | null>(null)
 
@@ -120,10 +126,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
    }
 
    return (
-      <Card
-         title="Edit Profile"
-         extra={
-            isEditing ? (
+      <Card className="wounded-none">
+         <PageDetails title="Edit Profile" onBack={onBack}>
+            {isEditing ? (
                <Flex gap="middle">
                   <Button onClick={() => setIsEditing(false)}>Cancel</Button>
                   <Button
@@ -138,9 +143,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
                <Button type="primary" onClick={handleEdit}>
                   Edit
                </Button>
-            )
-         }
-      >
+            )}
+         </PageDetails>
+
          <Form form={form} layout="vertical" onFinish={handleSave}>
             <Descriptions bordered column={1}>
                <Descriptions.Item label="Full Name">

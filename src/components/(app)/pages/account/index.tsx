@@ -13,19 +13,20 @@ import UserDetails from './user-details'
 const { Title } = Typography
 interface UserAccountProps {
    eventid: string
+   onBack: () => void
 }
 
-function UserAccount({ eventid }: UserAccountProps) {
+function UserAccount({ eventid, onBack }: UserAccountProps) {
    const [searchParams] = useSearchParams()
    const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
    return (
       <Layout className="w-full h-screen overflow-y-auto">
          {searchParams && searchParams[1] === 'profile' ? (
-            <>{userData && <UserDetails user={userData} />}</>
+            <>{userData && <UserDetails user={userData} onBack={onBack} />}</>
          ) : searchParams && searchParams[1] === 'events' ? (
-            <EventDetails eventid={eventid} />
+            <EventDetails eventid={eventid} onBack={onBack} />
          ) : searchParams && searchParams[1] === 'create-event' ? (
-            <CreateSubEvent parentId={eventid} />
+            <CreateSubEvent parentId={eventid} onBack={onBack} />
          ) : searchParams && searchParams[1] === 'theme' ? (
             <Title>Theme</Title>
          ) : searchParams && searchParams[1] === 'language' ? (
@@ -35,7 +36,7 @@ function UserAccount({ eventid }: UserAccountProps) {
          ) : searchParams && searchParams[1] === 'delete-account' ? (
             <Title>Delete Account</Title>
          ) : (
-            <>{userData && <UserDetails user={userData} />}</>
+            <>{userData && <UserDetails user={userData} onBack={onBack} />}</>
          )}
       </Layout>
    )

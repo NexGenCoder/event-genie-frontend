@@ -15,15 +15,16 @@ import {
    useGetEventTypesQuery,
    useUpdateEventMutation,
 } from '@/app/services/eventsApi'
-import { IUpdateEvent } from '@/types/event'
 
 import EditEventForm from './update-event'
+import PageDetails from './page-details'
 
 interface EventDetailsProps {
    eventid: string
+   onBack: () => void
 }
 
-const EventDetails = ({ eventid }: EventDetailsProps) => {
+const EventDetails = ({ eventid, onBack }: EventDetailsProps) => {
    const { data: event, isLoading, error } = useGetEventDetailsQuery(eventid)
    const [isEditing, setIsEditing] = useState(false)
    const [form] = Form.useForm()
@@ -67,11 +68,12 @@ const EventDetails = ({ eventid }: EventDetailsProps) => {
    }
 
    return (
-      <Card
-         title="Event Details"
-         style={{ width: '100%' }}
-         extra={
-            event.data.role === 'host' && (
+      <Card>
+         <PageDetails
+            title={isEditing ? 'Edit Event' : 'Event Details'}
+            onBack={onBack}
+         >
+            {event.data.role === 'host' && (
                <>
                   {isEditing ? (
                      <Button onClick={handleCancelClick}>Cancel</Button>
@@ -79,9 +81,9 @@ const EventDetails = ({ eventid }: EventDetailsProps) => {
                      <Button onClick={handleEditClick}>Edit</Button>
                   )}
                </>
-            )
-         }
-      >
+            )}
+         </PageDetails>
+
          {isEditing ? (
             <>
                {eventTypes && (

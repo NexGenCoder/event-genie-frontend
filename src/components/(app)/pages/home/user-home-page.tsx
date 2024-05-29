@@ -1,7 +1,7 @@
 'use client'
 import { Button, Flex, Layout, Result, Spin } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import {
    useGetEventChannelsQuery,
@@ -11,6 +11,7 @@ import UserHome from '@/components/(app)/pages/home'
 import HomeSidebar from '@/components/(app)/sidebar/home'
 import Menus from '@/components/(app)/sidebar/menu'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
+import CustomDrawer from '../../sidebar/custom-drawer'
 
 interface UserHomePageProps {
    eventid: string
@@ -23,9 +24,11 @@ function UserHomePage({ eventid }: UserHomePageProps) {
       useGetEventDetailsQuery(eventid)
    const [searchParam] = useSearchParams()
    const { data: userData } = useIsAuthenticated()
+   const [open, setOpen] = useState(false)
+   const [startX, setStartX] = useState<number | null>(null)
+   const layoutRef = useRef<HTMLDivElement>(null)
 
    const router = useRouter()
-
    useEffect(() => {
       if (channelList && channelList?.data) {
          router.push(
@@ -33,6 +36,44 @@ function UserHomePage({ eventid }: UserHomePageProps) {
          )
       }
    }, [channelList, eventid, router])
+
+   useEffect(() => {
+      const handleTouchStart = (e: TouchEvent) => {
+         setStartX(e.touches[0].clientX)
+      }
+
+      const handleTouchMove = (e: TouchEvent) => {
+         if (startX !== null) {
+            const currentX = e.touches[0].clientX
+            const diffX = currentX - startX
+
+            if (diffX > 50) {
+               setOpen(true)
+            } else if (diffX < -50) {
+               setOpen(false)
+            }
+         }
+      }
+
+      const handleTouchEnd = () => {
+         setStartX(null)
+      }
+
+      const layoutElement = layoutRef.current
+      if (layoutElement) {
+         layoutElement.addEventListener('touchstart', handleTouchStart)
+         layoutElement.addEventListener('touchmove', handleTouchMove)
+         layoutElement.addEventListener('touchend', handleTouchEnd)
+      }
+
+      return () => {
+         if (layoutElement) {
+            layoutElement.removeEventListener('touchstart', handleTouchStart)
+            layoutElement.removeEventListener('touchmove', handleTouchMove)
+            layoutElement.removeEventListener('touchend', handleTouchEnd)
+         }
+      }
+   }, [startX])
 
    const contentStyle: React.CSSProperties = {
       padding: 50,
@@ -44,7 +85,7 @@ function UserHomePage({ eventid }: UserHomePageProps) {
 
    if (isEventChannelsFetching && isEventDataFetching)
       return (
-         <Layout className="flex items-center justify-center w-full">
+         <Layout className="flex items-center justify-center w-full min-h-screen">
             <Spin size="large" tip="Loading..." className="w-full h-full">
                {content}
             </Spin>
@@ -53,7 +94,7 @@ function UserHomePage({ eventid }: UserHomePageProps) {
 
    if (!eventData) {
       return (
-         <Layout className="relative w-full min-h-screen  flex flex-col justify-center">
+         <Layout className="relative w-full min-h-screen flex flex-col justify-center">
             <Result
                status="404"
                title="Event not found"
@@ -69,9 +110,9 @@ function UserHomePage({ eventid }: UserHomePageProps) {
    }
 
    return (
-      <Layout className="h-screen">
+      <Layout ref={layoutRef} className="h-screen">
          <Flex className="h-full w-full">
-            <Flex className="flex w-[300px] h-full ">
+            <Flex className="md:flex w-[300px] h-full hidden">
                <Menus eventid={eventid} />
 
                {channelList?.data && (
@@ -81,9 +122,22 @@ function UserHomePage({ eventid }: UserHomePageProps) {
                   />
                )}
             </Flex>
+            <CustomDrawer isOpen={open} setIsOpen={setOpen} title="Chats">
+               <Flex className="flex w-full h-full md:hidden">
+                  <Menus eventid={eventid} />
+
+                  {channelList?.data && (
+                     <HomeSidebar
+                        onBack={() => setOpen(!open)}
+                        eventid={eventid}
+                        channelList={channelList?.data}
+                     />
+                  )}
+               </Flex>
+            </CustomDrawer>
 
             {!searchParam ? (
-               <Layout className="relative w-full min-h-screen  flex flex-col justify-center">
+               <Layout className="relative w-full min-h-screen flex flex-col justify-center">
                   <Result
                      title="Select a channel"
                      subTitle="Select a channel to start conversation"
@@ -93,7 +147,11 @@ function UserHomePage({ eventid }: UserHomePageProps) {
                userData &&
                searchParam &&
                searchParam[1] && (
-                  <UserHome userdata={userData} channelId={searchParam[1]} />
+                  <UserHome
+                     userdata={userData}
+                     channelId={searchParam[1]}
+                     onBack={() => setOpen(!open)}
+                  />
                )
             )}
          </Flex>

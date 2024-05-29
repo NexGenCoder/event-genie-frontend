@@ -16,6 +16,7 @@ import {
 import { RiChatVoiceFill } from 'react-icons/ri'
 
 import { IChannelCategoryList } from '@/types/channel'
+import { on } from 'events'
 
 const iconMap: { [key: string]: JSX.Element } = {
    pray: <FaPrayingHands />,
@@ -33,16 +34,17 @@ const iconMap: { [key: string]: JSX.Element } = {
 interface HomeSidebarProps {
    eventid: string
    channelList: IChannelCategoryList[]
+   onBack?: () => void
 }
 
-const HomeSidebar = ({ eventid, channelList }: HomeSidebarProps) => {
+const HomeSidebar = ({ eventid, channelList, onBack }: HomeSidebarProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover, colorBgBlur },
    } = theme.useToken()
 
    return (
       <Layout
-         className="relative w-[200px] h-full overflow-y-auto"
+         className="relative w-full h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu

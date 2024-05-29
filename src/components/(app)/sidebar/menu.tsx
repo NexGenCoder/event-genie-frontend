@@ -37,7 +37,7 @@ const Menus = ({ eventid }: MenusProps) => {
 
    return (
       <Layout
-         className="relative w-[70px] h-full px-2 py-4"
+         className="relative w-fit h-full px-2 py-4"
          style={{ backgroundColor: colorBgContainer }}
       >
          <div className="flex flex-col items-center justify-between h-full">

@@ -1,9 +1,6 @@
-import { Flex, Layout, Typography } from 'antd'
 import React from 'react'
 
-import UserAccount from '@/components/(app)/pages/account'
-import Menus from '@/components/(app)/sidebar/menu'
-import ProfileSidebar from '@/components/(app)/sidebar/profile'
+import AccountPage from '@/components/(app)/pages/account/account-page'
 
 interface UserProfilePageProps {
    params: {
@@ -12,17 +9,7 @@ interface UserProfilePageProps {
 }
 
 function UserProfilePage({ params }: UserProfilePageProps) {
-   return (
-      <Layout className="h-screen">
-         <Flex className="h-full w-full">
-            <Flex className="flex w-[300px] h-full ">
-               <Menus eventid={params.eventid} />
-               <ProfileSidebar eventid={params.eventid} />
-            </Flex>
-            <UserAccount eventid={params.eventid} />
-         </Flex>
-      </Layout>
-   )
+   return <AccountPage eventid={params.eventid} />
 }
 
 export default UserProfilePage

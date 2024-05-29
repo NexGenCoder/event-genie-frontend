@@ -18,9 +18,10 @@ import SendMessage from './send-message'
 interface UserHomeProps {
    userdata: IUser
    channelId: string
+   onBack?: () => void
 }
 
-function UserHome({ userdata, channelId }: UserHomeProps) {
+function UserHome({ userdata, channelId, onBack }: UserHomeProps) {
    const [messages, setMessages] = useState<IMessage[]>([])
    const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -53,7 +54,7 @@ function UserHome({ userdata, channelId }: UserHomeProps) {
 
       return () => {
          socket.emit('leave', channelId)
-         socket.off('message') // Clean up listener
+         socket.off('message')
       }
    }, [channelId])
 
@@ -98,10 +99,18 @@ function UserHome({ userdata, channelId }: UserHomeProps) {
       }
    }
 
+   const messageSearchHandler = () => {
+      console.log('Search')
+   }
+
    return (
       <Layout className="w-full h-screen flex flex-col justify-between">
          {channelDetails && (
-            <ChannelDetails channelDetails={channelDetails.data} />
+            <ChannelDetails
+               channelDetails={channelDetails.data}
+               onBack={onBack}
+               onSearch={messageSearchHandler}
+            />
          )}
          <Layout className="flex-1 overflow-y-auto">
             {messages && messages.length ? (

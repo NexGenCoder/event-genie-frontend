@@ -1,4 +1,4 @@
-import { Button, Flex, Image, theme, Typography } from 'antd'
+import { Button, Flex, Image, Space, theme, Typography } from 'antd'
 import React from 'react'
 import { BsFillCameraReelsFill } from 'react-icons/bs'
 import { FaPrayingHands, FaStore } from 'react-icons/fa'
@@ -12,6 +12,8 @@ import {
    MdTextsms,
 } from 'react-icons/md'
 import { RiChatVoiceFill } from 'react-icons/ri'
+import { IoArrowBack } from 'react-icons/io5'
+import { IoSearch } from 'react-icons/io5'
 
 import { IChannel } from '@/types/channel'
 
@@ -19,6 +21,8 @@ const { Text } = Typography
 
 interface ChannelDetailsProps {
    channelDetails: IChannel
+   onBack?: () => void
+   onSearch?: () => void
 }
 
 const iconMap: { [key: string]: JSX.Element } = {
@@ -35,13 +39,17 @@ const iconMap: { [key: string]: JSX.Element } = {
    decor: <MdOutlineEventSeat />,
 }
 
-const ChannelDetails = ({ channelDetails }: ChannelDetailsProps) => {
+const ChannelDetails = ({
+   channelDetails,
+   onBack,
+   onSearch,
+}: ChannelDetailsProps) => {
    const {
       token: { colorBgContainer, colorTextBase, colorBgTextHover },
    } = theme.useToken()
 
    return (
-      <Flex className="top-0 left-0 w-full p-2 shadow-md z-50" vertical>
+      <Flex className="top-0 left-0 w-full p-2 shadow-md" vertical>
          <Flex
             gap="small"
             justify="space-between"
@@ -49,13 +57,32 @@ const ChannelDetails = ({ channelDetails }: ChannelDetailsProps) => {
             style={{ width: '100%' }}
          >
             <Flex gap="small" align="center">
-               <Text className="text-4xl flex justify-center items-center">
-                  {iconMap[channelDetails.icon]}
-               </Text>
-               <Text strong className="capitalize">
-                  {channelDetails.name}
-               </Text>
+               <Space className="md:hidden flex">
+                  <Button
+                     type="text"
+                     className="text-2xl"
+                     icon={<IoArrowBack />}
+                     title="Back"
+                     onClick={onBack}
+                  />
+               </Space>
+
+               <Flex gap="small" align="center" className="w-full">
+                  <Text className="text-3xl flex justify-center items-center">
+                     {iconMap[channelDetails.icon]}
+                  </Text>
+                  <Text strong className="capitalize">
+                     {channelDetails.name}
+                  </Text>
+               </Flex>
             </Flex>
+            <Button
+               type="text"
+               className="text-2xl"
+               icon={<IoSearch />}
+               title="Search"
+               onClick={onSearch}
+            />
          </Flex>
       </Flex>
    )

@@ -36,7 +36,7 @@ const DMSidebar = ({ eventid }: DMSidebarProps) => {
 
    return (
       <Layout
-         className="relative w-[200px] h-full overflow-y-auto"
+         className="relative w-full h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu
