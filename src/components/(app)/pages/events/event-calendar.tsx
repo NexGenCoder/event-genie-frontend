@@ -1,7 +1,7 @@
 'use client'
 import { Layout, theme } from 'antd'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 
 import CalendarToolbar from './calendar-toolbar'
@@ -24,7 +24,7 @@ function EventCalendar() {
    }
 
    return (
-      <Layout className="flex flex-col gap-2 w-full p-4 h-screen overflow-y-auto">
+      <Layout className="flex flex-col gap-2 w-full p-4 ">
          <CalendarToolbar
             view={view}
             setView={setView}
@@ -36,7 +36,7 @@ function EventCalendar() {
             startAccessor={'start'}
             endAccessor={'end'}
             style={{
-               height: '85vh',
+               height: '80%',
                width: '100%',
                backgroundColor: colorBgContainer,
                color: colorTextBase,

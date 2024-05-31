@@ -1,5 +1,6 @@
-import React from 'react'
 import { Layout } from 'antd'
+import React from 'react'
+
 import VendorOnboarding from '@/components/join-as-vendor'
 
 const VendorOnboardingPage = () => {

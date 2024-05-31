@@ -70,7 +70,7 @@ function DirectMessagePage({ eventid }: DirectMessagePageProps) {
    return (
       <AppPageComponent
          eventid={eventid}
-         title="Home"
+         title="Direct Messages"
          open={open}
          setOpen={setOpen}
          sidebar={

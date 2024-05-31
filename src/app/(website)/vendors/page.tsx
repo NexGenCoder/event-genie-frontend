@@ -28,10 +28,10 @@ export default function Home() {
 
 export function generateMetadata() {
    return {
-      title: 'Vendors | Getogether',
+      title: 'Vendors - Event Genie',
       description:
          'Explore the vendors that are part of the Getogether platform.',
       image: '/next.svg',
-      url: 'https://getogether.com/vendors',
+      url: 'http://eg.gittrackr.engineer/vendors',
    }
 }

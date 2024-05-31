@@ -15,7 +15,7 @@ function AccountPage({ eventid }: AccountPageProps) {
    return (
       <AppPageComponent
          eventid={eventid}
-         title="Account"
+         title="Accountn Settings"
          open={open}
          setOpen={setOpen}
          sidebar={<ProfileSidebar eventid={eventid} />}

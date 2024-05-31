@@ -44,7 +44,7 @@ const HomeSidebar = ({ eventid, channelList, onBack }: HomeSidebarProps) => {
 
    return (
       <Layout
-         className="relative w-full h-full overflow-y-auto"
+         className="relative w-[230px] h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
          <Menu

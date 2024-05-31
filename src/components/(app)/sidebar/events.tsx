@@ -55,18 +55,9 @@ const EventSidebar = ({ eventid }: EventSidebarProps) => {
 
    return (
       <Layout
-         className="relative w-full h-full overflow-y-auto"
+         className="relative w-[230px] h-full overflow-y-auto"
          style={{ backgroundColor: colorBgBlur }}
       >
-         <Flex gap={2} justify="between" align="center" className="py-2">
-            <Button
-               title="Today"
-               className="w-full rounded-none"
-               onClick={() => console.log('Today')}
-            >
-               All Events
-            </Button>
-         </Flex>
          <Menu
             defaultSelectedKeys={
                sampleChannels.length > 0 ? [sampleChannels[0].eventid] : []

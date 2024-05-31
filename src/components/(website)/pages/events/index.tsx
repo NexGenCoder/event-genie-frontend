@@ -4,11 +4,14 @@ import { Button, Layout, Result, Spin } from 'antd'
 import React from 'react'
 
 import { useGetUserEventsQuery } from '@/app/services/eventsApi'
+import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 import UserEventsList from './user-events'
 
 function UserEvents() {
-   const { data: userEvents, isLoading } = useGetUserEventsQuery()
+   const { data: userEvents, isLoading: isEventsFetching } =
+      useGetUserEventsQuery()
+   const { isLoggedin, isLoading } = useIsAuthenticated()
 
    const contentStyle: React.CSSProperties = {
       padding: 50,
@@ -18,7 +21,7 @@ function UserEvents() {
 
    const content = <div style={contentStyle} />
 
-   if (isLoading)
+   if (isLoading && isEventsFetching)
       return (
          <Layout className="flex items-center justify-center w-full">
             <Spin size="large" tip="Loading..." className="w-full h-full">
@@ -26,6 +29,23 @@ function UserEvents() {
             </Spin>
          </Layout>
       )
+
+   if (!isLoggedin) {
+      return (
+         <Layout className="flex items-center justify-center w-full">
+            <Result
+               status="403"
+               title="You are not logged in"
+               subTitle="Please log in to view your events"
+               extra={
+                  <Button type="primary" href="/login" key="console">
+                     Log in
+                  </Button>
+               }
+            />
+         </Layout>
+      )
+   }
 
    return (
       <Layout className="flex flex-col gap-4 items-center w-full">

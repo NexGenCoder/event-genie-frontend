@@ -17,7 +17,7 @@ export default function RootLayout({
    children: React.ReactNode
 }>) {
    const { defaultAlgorithm, darkAlgorithm } = theme
-   const [isDarkMode, setIsDarkMode] = useState(true)
+   const [isDarkMode, setIsDarkMode] = useState(false)
 
    return (
       <html lang="en">

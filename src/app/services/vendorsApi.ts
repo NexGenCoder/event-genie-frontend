@@ -1,5 +1,4 @@
 import { api } from '@/app/services/api'
-
 import { IVendorCreateBody, IVendorCreateResponse } from '@/types/vendor'
 
 export const vendorApi = api.injectEndpoints({

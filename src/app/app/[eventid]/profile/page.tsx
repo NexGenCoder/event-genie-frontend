@@ -20,13 +20,13 @@ export function generateMetadata() {
       description:
          "Manage your account settings and preferences. Event Genie is a platform that helps you find and create events that you'll love. Discover events tailored to your interests, connect with like-minded individuals, and create memorable experiences.",
       image: '/next.svg',
-      url: 'https://getogether.com',
+      url: 'http://eg.gittrackr.engineer',
       keywords:
          'events, event planning, social events, local events, event discovery',
       author: 'Event Genie Team',
       openGraph: {
          type: 'website',
-         url: 'https://getogether.com',
+         url: 'http://eg.gittrackr.engineer',
          title: 'Event Genie - Home',
          description:
             "Event Genie is a platform that helps you find and create events that you'll love. Discover events tailored to your interests, connect with like-minded individuals, and create memorable experiences.",

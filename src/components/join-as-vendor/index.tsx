@@ -1,10 +1,12 @@
 'use client'
+import { Button, Flex, Form, Input, InputNumber, Layout, message } from 'antd'
 import React, { useState } from 'react'
-import { Form, Button, Input, message, InputNumber, Flex, Layout } from 'antd'
-import { IVendorCreateBody } from '@/types/vendor'
+
 import { useCreateVendorMutation } from '@/app/services/vendorsApi'
-import ImageUpload from '../profile/image-upload'
+import { IVendorCreateBody } from '@/types/vendor'
 import { imageUpload } from '@/utils/uploadImage'
+
+import ImageUpload from '../profile/image-upload'
 
 const VendorOnboarding = () => {
    const [brandImage, setBrandImage] = useState<File | null>(null)
