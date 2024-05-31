@@ -20,7 +20,7 @@ export type ICreatersvp = {
 
 export type IUpdateRsvp = {
    rsvpid: string
-   status: 'accepted' | 'declined'
+   status?: 'accepted' | 'declined'
 }
 
 export type IRsvpCreateResponse = {

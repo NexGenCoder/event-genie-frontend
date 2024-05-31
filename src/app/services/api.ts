@@ -35,6 +35,8 @@ export const api = createApi({
       'UpdateEvent',
       'GetDirectMessages',
       'CreateVendor',
+      'GetVendor',
+      'GetVendors',
    ],
    endpoints: () => ({}),
 })

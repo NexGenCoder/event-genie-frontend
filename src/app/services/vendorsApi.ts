@@ -1,5 +1,10 @@
 import { api } from '@/app/services/api'
-import { IVendorCreateBody, IVendorCreateResponse } from '@/types/vendor'
+import {
+   IVendorCreateBody,
+   IVendorCreateResponse,
+   IVendorResponse,
+   IVendorsResponse,
+} from '@/types/vendor'
 
 export const vendorApi = api.injectEndpoints({
    endpoints: (builders) => ({
@@ -10,10 +15,20 @@ export const vendorApi = api.injectEndpoints({
                method: 'POST',
                body,
             }),
-            invalidatesTags: ['CreateVendor'],
+            invalidatesTags: ['GetVendor', 'GetVendors'],
          },
       ),
+      getVendor: builders.query<IVendorResponse, void>({
+         query: () => '/vendor',
+      }),
+      getVendors: builders.query<IVendorsResponse[], void>({
+         query: () => '/vendors',
+      }),
    }),
 })
 
-export const { useCreateVendorMutation } = vendorApi
+export const {
+   useCreateVendorMutation,
+   useGetVendorQuery,
+   useGetVendorsQuery,
+} = vendorApi

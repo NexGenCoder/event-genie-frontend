@@ -3,7 +3,7 @@ import '../globals.css'
 
 import { ConfigProvider, FloatButton, theme, Tooltip } from 'antd'
 import { Inter } from 'next/font/google'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CiLight } from 'react-icons/ci'
 import { MdDarkMode } from 'react-icons/md'
 import { Provider } from 'react-redux'
@@ -21,6 +21,10 @@ export default function RootLayout({
 }>) {
    const { defaultAlgorithm, darkAlgorithm } = theme
    const [isDarkMode, setIsDarkMode] = useState(false)
+
+   useEffect(() => {
+      setIsDarkMode(localStorage.getItem('darkmode') === 'true')
+   }, [])
 
    return (
       <html lang="en">

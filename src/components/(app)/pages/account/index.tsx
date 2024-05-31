@@ -8,6 +8,7 @@ import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 import CreateSubEvent from './create-sub-event'
 import EventDetails from './event-details'
+import ThemePage from './theme-page'
 import UserDetails from './user-details'
 
 const { Title } = Typography
@@ -28,7 +29,7 @@ function UserAccount({ eventid, onBack }: UserAccountProps) {
          ) : searchParams && searchParams[1] === 'create-event' ? (
             <CreateSubEvent parentId={eventid} onBack={onBack} />
          ) : searchParams && searchParams[1] === 'theme' ? (
-            <Title>Theme</Title>
+            <ThemePage onBack={onBack} />
          ) : searchParams && searchParams[1] === 'language' ? (
             <Title>Language</Title>
          ) : searchParams && searchParams[1] === 'country' ? (
