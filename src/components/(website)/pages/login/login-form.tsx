@@ -140,7 +140,6 @@ function LoginForm() {
                         required
                         autoComplete="tel"
                         defaultValue={formData.mobile}
-                        autoFocus
                         size="large"
                         status={formData.mobile ? '' : 'error'}
                         className="w-full text-xl"

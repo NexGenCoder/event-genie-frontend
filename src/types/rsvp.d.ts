@@ -15,7 +15,7 @@ export type ICreatersvp = {
    userid?: string
    eventid: string
    expiry_at: Date
-   user_limit?: number // Only for open invites
+   user_limit?: number
 }
 
 export type IUpdateRsvp = {

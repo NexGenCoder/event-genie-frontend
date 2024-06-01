@@ -53,7 +53,7 @@ function UserRsvp() {
          ) : (
             <Result
                status="404"
-               title="You have ano any invitations yet"
+               title="You have no any invitations yet"
                subTitle="You can request to join an event by browsing the events page"
                extra={
                   <Button type="primary" href="/events" key="console">

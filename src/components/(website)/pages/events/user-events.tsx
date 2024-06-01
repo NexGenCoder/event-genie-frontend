@@ -24,7 +24,9 @@ function UserEventsList({ events }: UserEventsProps) {
          <Title level={3} className="text-center">
             Your Events
          </Title>
-         <Text className="text-center">Events you are hosting</Text>
+         <Text className="text-center">
+            Events you are hosting or attending.
+         </Text>
          <div className="w-full flex gap-4 flex-wrap justify-center">
             {events.map((event) => (
                <Card

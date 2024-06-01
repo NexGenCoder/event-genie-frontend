@@ -1,5 +1,5 @@
 'use client'
-import { Layout, Typography } from 'antd'
+import { Button, Layout, Result, Typography } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
@@ -20,6 +20,24 @@ interface UserAccountProps {
 function UserAccount({ eventid, onBack }: UserAccountProps) {
    const [searchParams] = useSearchParams()
    const { isLoggedin, data: userData, isLoading } = useIsAuthenticated()
+
+   if (!isLoggedin) {
+      return (
+         <Layout className="flex items-center justify-center w-full">
+            <Result
+               status="403"
+               title="You are not logged in"
+               subTitle="Please log in to view your events"
+               extra={
+                  <Button type="primary" href="/login" key="console">
+                     Log in
+                  </Button>
+               }
+            />
+         </Layout>
+      )
+   }
+
    return (
       <Layout className="w-full h-screen overflow-y-auto">
          {searchParams && searchParams[1] === 'profile' ? (

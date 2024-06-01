@@ -21,7 +21,7 @@ export const vendorApi = api.injectEndpoints({
       getVendor: builders.query<IVendorResponse, void>({
          query: () => '/vendor',
       }),
-      getVendors: builders.query<IVendorsResponse[], void>({
+      getVendors: builders.query<IVendorsResponse, void>({
          query: () => '/vendors',
       }),
    }),

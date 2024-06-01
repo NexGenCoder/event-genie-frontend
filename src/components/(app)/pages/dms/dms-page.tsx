@@ -23,7 +23,7 @@ function DirectMessagePage({ eventid }: DirectMessagePageProps) {
    const { data: eventData, isLoading: isEventDataFetching } =
       useGetEventDetailsQuery(eventid)
    const [searchParam] = useSearchParams()
-   const { data: userData } = useIsAuthenticated()
+   const { data: userData, isLoggedin } = useIsAuthenticated()
    const [open, setOpen] = useState(false)
 
    const router = useRouter()
@@ -60,6 +60,23 @@ function DirectMessagePage({ eventid }: DirectMessagePageProps) {
                extra={
                   <Button type="primary" onClick={() => router.push('/')}>
                      Back Home
+                  </Button>
+               }
+            />
+         </Layout>
+      )
+   }
+
+   if (!isLoggedin) {
+      return (
+         <Layout className="flex items-center justify-center w-full">
+            <Result
+               status="403"
+               title="You are not logged in"
+               subTitle="Please log in to view your events"
+               extra={
+                  <Button type="primary" href="/login" key="console">
+                     Log in
                   </Button>
                }
             />
