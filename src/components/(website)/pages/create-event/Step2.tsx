@@ -49,13 +49,12 @@ const Step2 = ({
                duration: 2.5,
             })
             .then(() => {
-               messageApi.success(`Event Created Successfully!`)
+               messageApi.success(response.message)
                queryClient.refetch()
                nextStep()
             })
-      } catch (error) {
-         messageApi.error(`Failed to create event!`)
-         console.error(error)
+      } catch (error: any) {
+         messageApi.error(error.data.message)
       }
    }
 
@@ -88,8 +87,9 @@ const Step2 = ({
                name="isPrivate"
                label="Private Event"
                className="w-full"
+               required
             >
-               <Switch defaultChecked={false} />
+               <Switch checkedChildren="Yes" unCheckedChildren="No" />
             </Form.Item>
          </Flex>
          <Flex gap="middle" className="w-full">

@@ -6,6 +6,7 @@ import {
    InputNumber,
    Layout,
    message,
+   Select,
    theme,
    Typography,
 } from 'antd'
@@ -17,6 +18,8 @@ import { IoMdLogIn } from 'react-icons/io'
 import { MdOutlineSendToMobile } from 'react-icons/md'
 
 import {
+   useDemoUserLoginMutation,
+   useGetDemoUserQuery,
    useSendOtpMutation,
    useVerifyOtpMutation,
 } from '@/app/services/authApi'
@@ -28,12 +31,15 @@ import { CountrySelector } from './country-selector'
 const { Link, Text, Title } = Typography
 import type { GetProp } from 'antd'
 import type { OTPProps } from 'antd/es/input/OTP'
+
 function LoginForm() {
    const router = useRouter()
    const [formData, setFormData] = useState({ mobile: '' })
    const [otp, setOtp] = useState<string>('')
    const [showOtp, setShowOtp] = useState(false)
    const [messageApi, contextHolder] = message.useMessage()
+   const { data: userList } = useGetDemoUserQuery()
+   const [demoUserLogin, { isLoading }] = useDemoUserLoginMutation()
 
    const {
       token: { colorTextBase },
@@ -115,6 +121,30 @@ function LoginForm() {
 
    const sharedProps: OTPProps = {
       onChange,
+   }
+
+   const demoUserLoginHandler = async (username: string) => {
+      console.log(username)
+      try {
+         if (!username) return
+         const response = await demoUserLogin({ username }).unwrap()
+         messageApi
+            .open({
+               type: 'loading',
+               content: 'Logging in...',
+               duration: isLoading ? 0 : 2,
+            })
+            .then(() => {
+               message.success(response.message, 2)
+               if (response?.data.is_profile_completed) {
+                  router.push('/')
+               } else {
+                  router.push('/create-profile')
+               }
+            })
+      } catch (error: any) {
+         message.error(error.data.message, 2)
+      }
    }
 
    return (
@@ -204,6 +234,32 @@ function LoginForm() {
             <Text className="font-semibold">OR</Text>
             <hr className="flex-1" />
          </div>
+
+         {userList && userList.users && (
+            <>
+               <Text className="md:text-lg text-md font-semibold">
+                  Login as a demo user
+               </Text>
+               <Select
+                  className="w-full"
+                  placeholder="Select a user"
+                  loading={!userList}
+                  onChange={demoUserLoginHandler}
+               >
+                  {userList.users?.map((user) => (
+                     <Select.Option key={user.userid} value={user.username}>
+                        {user.firstname} {user.lastname}
+                     </Select.Option>
+                  ))}
+               </Select>
+
+               <div className="flex items-center gap-4 my-8">
+                  <hr className="flex-1" />
+                  <Text className="font-semibold">OR</Text>
+                  <hr className="flex-1" />
+               </div>
+            </>
+         )}
 
          <div className="flex flex-col justify-center items-center gap-4">
             <Text className="md:text-lg text-md font-semibold">

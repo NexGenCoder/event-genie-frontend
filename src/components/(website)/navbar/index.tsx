@@ -29,7 +29,7 @@ function Navbar() {
                style={{ color: colorTextBase }}
             >
                <Image
-                  src="/logo.jpg"
+                  src="/logo.png"
                   width={35}
                   height={35}
                   alt="Event Genie Logo"

@@ -8,7 +8,7 @@ function LoginImage() {
          <Image
             width={400}
             height={400}
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Login Image"
             className="rounded-l-[20px] object-cover w-full"
          />

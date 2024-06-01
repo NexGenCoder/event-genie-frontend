@@ -37,6 +37,10 @@ type IGetUsersResponse = {
 type ICheckusernameResponse = {
    exists: boolean
 }
+
+type ILoginDemoUser = {
+   username: string
+}
 export const authApi = api.injectEndpoints({
    endpoints: (builder) => ({
       getSelf: builder.query<IUserResponse, void>({
@@ -58,6 +62,14 @@ export const authApi = api.injectEndpoints({
             body,
          }),
          invalidatesTags: ['VerifyOtp'],
+      }),
+      demoUserLogin: builder.mutation<IUserResponse, ILoginDemoUser>({
+         query: (body) => ({
+            url: '/auth/demo-user-login',
+            method: 'POST',
+            body,
+         }),
+         invalidatesTags: ['Self'],
       }),
       updateUserDetails: builder.mutation<IUpdateUserResponse, IUpdateUser>({
          query: (body) => ({
@@ -85,14 +97,20 @@ export const authApi = api.injectEndpoints({
          query: () => '/users',
          providesTags: ['Users'],
       }),
+      getDemoUser: builder.query<IGetUsersResponse, void>({
+         query: () => '/demo-user',
+         providesTags: ['DemoUser'],
+      }),
    }),
 })
 export const {
    useSendOtpMutation,
    useVerifyOtpMutation,
+   useDemoUserLoginMutation,
    useLogoutMutation,
    useUpdateUserDetailsMutation,
    useGetSelfQuery,
    useCheckusernameQuery,
    useGetUsersQuery,
+   useGetDemoUserQuery,
 } = authApi

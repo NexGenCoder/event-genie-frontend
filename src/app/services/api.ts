@@ -37,6 +37,7 @@ export const api = createApi({
       'CreateVendor',
       'GetVendor',
       'GetVendors',
+      'DemoUser',
    ],
    endpoints: () => ({}),
 })
