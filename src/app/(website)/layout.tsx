@@ -9,6 +9,7 @@ import { MdDarkMode } from 'react-icons/md'
 import { Provider } from 'react-redux'
 
 import { store } from '@/app/store'
+import AppFooter from '@/components/(website)/footer'
 import Navbar from '@/components/(website)/navbar'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -37,6 +38,7 @@ export default function RootLayout({
                >
                   <Navbar />
                   {children}
+                  <AppFooter />
                   <Tooltip
                      title={isDarkMode ? 'Light Mode' : 'Dark Mode'}
                      placement="left"

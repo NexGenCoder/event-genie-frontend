@@ -123,6 +123,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
             })
             .then(() => {
                messageApi.success(`Category Created Successfully`)
+               setShowResult(true)
             })
          queryClient.refetch()
          setCategoryModalOpen(false)

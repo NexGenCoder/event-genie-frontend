@@ -7,7 +7,9 @@ import { useGetUserEventsQuery } from '@/app/services/eventsApi'
 import { useIsAuthenticated } from '@/hooks/useIsAuthenticated'
 
 import CreateSubEvent from './create-sub-event'
+import DeleteAccount from './delete-account'
 import EventDetails from './event-details'
+import CountryAndRegionSelector from './language-country'
 import ThemePage from './theme-page'
 import UserDetails from './user-details'
 
@@ -49,11 +51,11 @@ function UserAccount({ eventid, onBack }: UserAccountProps) {
          ) : searchParams && searchParams[1] === 'theme' ? (
             <ThemePage onBack={onBack} />
          ) : searchParams && searchParams[1] === 'language' ? (
-            <Title>Language</Title>
+            <CountryAndRegionSelector />
          ) : searchParams && searchParams[1] === 'country' ? (
-            <Title>Country</Title>
+            <CountryAndRegionSelector />
          ) : searchParams && searchParams[1] === 'delete-account' ? (
-            <Title>Delete Account</Title>
+            <DeleteAccount />
          ) : (
             <>{userData && <UserDetails user={userData} onBack={onBack} />}</>
          )}

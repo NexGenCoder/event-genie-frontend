@@ -28,7 +28,7 @@ function CreateButtons() {
    const [open, SetOpen] = useState(false)
 
    return (
-      <Layout className="w-full flex flex-col gap-4 items-center justify-center md:w-[80%] ">
+      <Layout className="w-full flex flex-col gap-4 items-center justify-center md:w-[80%] min-h-screen">
          <Title level={3} className="text-center">
             What would you like to do?
          </Title>

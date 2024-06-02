@@ -6,7 +6,7 @@ import LoginImage from './login-image'
 
 function LoginPage() {
    return (
-      <Layout className="flex min-h-[80vh] flex-col items-center justify-between p-6 md:px-20 md:py-6 w-full">
+      <Layout className="flex min-h-screen flex-col items-center justify-between p-6 md:px-20 md:py-6 w-full">
          <Layout className="flex md:flex-row flex-col items-center justify-between w-full rounded-[20px]">
             <LoginImage />
             <LoginForm />

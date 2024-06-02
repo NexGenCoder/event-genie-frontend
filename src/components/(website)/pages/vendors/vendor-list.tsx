@@ -2,14 +2,17 @@
 import { Button, Layout, Result, Spin, Typography } from 'antd'
 import React from 'react'
 
-import { useGetVendorsQuery } from '@/app/services/vendorsApi'
+import {
+   useGetVendorQuery,
+   useGetVendorsQuery,
+} from '@/app/services/vendorsApi'
 import VendorCard from '@/components/vendors/vendor-card'
 
 const { Title } = Typography
 
 function VendorList() {
    const { data: vendorList, isLoading, isError } = useGetVendorsQuery()
-   console.log('🚀 ~ VendorList ~ vendorList:', vendorList)
+   const { data: vendorDetails } = useGetVendorQuery()
 
    const contentStyle: React.CSSProperties = {
       padding: 50,
@@ -56,15 +59,20 @@ function VendorList() {
    }
 
    return (
-      <div className="w-full flex gap-4 flex-wrap justify-center">
-         {vendorList && vendorList.data && (
-            <>
-               {vendorList.data.map((vendor) => (
-                  <VendorCard key={vendor.vendorid} vendorInfo={vendor} />
-               ))}
-            </>
-         )}
-      </div>
+      <>
+         <Title level={2} className="text-center w-full">
+            Vendors
+         </Title>
+         <div className="w-full flex gap-4 flex-wrap justify-center">
+            {vendorList && vendorList.data && (
+               <>
+                  {vendorList.data.map((vendor) => (
+                     <VendorCard key={vendor.vendorid} vendorInfo={vendor} />
+                  ))}
+               </>
+            )}
+         </div>
+      </>
    )
 }
 
